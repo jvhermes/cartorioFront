@@ -1,0 +1,38 @@
+.container{
+
+    height: 190px;
+    width: 350px;
+    margin: 0 auto;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    h2{
+        margin-bottom: 3rem;
+    }
+    input{
+        
+        width: 300px;
+        height: 35px;
+        color: var(--black);
+    }
+}
+
+.content{
+    height: 100px;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    button{
+       
+        width:150px;
+        height:35px;
+     
+    }
+
+
+
+}
+

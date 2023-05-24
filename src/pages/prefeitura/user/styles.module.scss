@@ -1,0 +1,42 @@
+
+
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dddddf;
+    width: 95%;
+    margin: 3rem auto;
+    height: 400px;
+    flex-direction: column;
+    background-color: var(--white);
+   
+}
+
+.list{
+    gap: 2rem;
+}
+
+.image{
+    padding: 1rem 0;
+}
+
+.title{
+    padding: 2rem;
+    background-color: var(--white);
+    border: 1px solid #dddddf;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    h1{
+        font-weight:100;
+        font-size: 1.8rem;
+        color: var(--text2);
+    }
+    p{
+        color: var(--text2);
+    }
+ 
+}

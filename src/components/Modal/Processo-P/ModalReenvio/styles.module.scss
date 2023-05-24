@@ -1,0 +1,50 @@
+.container{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--black);
+
+}
+
+.buttons{
+    button{
+        width: 200px;
+        height: 35px;
+    }
+    margin-top: 3rem;
+}
+
+.observacao{
+    
+    textarea{
+        width: 800px;
+        border-radius: 0.3rem;
+        color:var(--black);
+        height:80px;
+        padding:0.5rem;
+        overflow: hidden;
+    }
+    display: flex;
+    flex-direction: column;
+    margin-top: 3rem;
+    
+}
+
+.selecao{
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+    select{
+        width: 200px;
+        height: 30px;
+        background-color: var(--gray);
+        border-radius: 0.3rem;
+    }
+}
