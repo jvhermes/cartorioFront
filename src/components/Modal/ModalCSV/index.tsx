@@ -25,7 +25,7 @@ export function ModalCSV({isOpen,onRequestClose}:ModalConfirmProps){
             const apiClient = setupAPIClient();
 
             const config = {     
-                headers: { 'content-type': 'multipart/form-data' },
+                headers: { "Content-Type": "multipart/form-data" },
                 transformRequest: formData => formData,
             }
             
