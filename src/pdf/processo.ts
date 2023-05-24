@@ -12,14 +12,7 @@ interface PdfRequest {
 export default function processoPdf({ processo }: PdfRequest) {
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-    const title = [
-        {
-            text: 'Processo ' + processo.num_processo,
-            fontSize: 15,
-            bold: true,
-            margin: [15, 20, 0, 45]
-        }
-    ];
+
 
 
     const descricaoPref = processo.descricao.map((item) => {
@@ -138,16 +131,7 @@ export default function processoPdf({ processo }: PdfRequest) {
         ...reenvio
     ];
 
-    function Rodape(currentPage, pageCount) {
-        return [
-            {
-                text: currentPage,
-                alignment: 'right',
-                fontSize: 9,
-                margin: [0, 10, 20, 0]
-            }
-        ]
-    }
+  
 
     const docDefinitions: TDocumentDefinitions = {
         pageSize: 'A4',
@@ -157,10 +141,13 @@ export default function processoPdf({ processo }: PdfRequest) {
             author: 'sicart',
             subject: 'descrição do processo',
         },
-        header: [title],
+        header: { text: 'Processo ' + processo.num_processo,
+        fontSize: 15,
+        bold: true,
+        margin: [15, 20, 0, 45]
+        },
         content: [details],
-        footer: Rodape,
-        defaultSyle: {
+        defaultStyle:{
             font: 'Helvetica'
         }
     }
