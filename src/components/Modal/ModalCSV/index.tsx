@@ -20,13 +20,14 @@ export function ModalCSV({isOpen,onRequestClose}:ModalConfirmProps){
     
         try{
             const data = new FormData();
+
             data.append('file',file)
 
             const apiClient = setupAPIClient();
 
             const config = {     
                 headers: { "Content-Type": "multipart/form-data" },
-                transformRequest: formData => formData,
+               
             }
             
             await apiClient.post('/lote',data,config,)
