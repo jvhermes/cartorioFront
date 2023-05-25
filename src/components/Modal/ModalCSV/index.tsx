@@ -27,10 +27,9 @@ export function ModalCSV({isOpen,onRequestClose}:ModalConfirmProps){
 
             const config = {     
                 headers: { "Content-Type": "multipart/form-data" },
-               
             }
             
-            await apiClient.post('/lote',data,config,)
+            await apiClient.post('/lote',data,config)
 
             toast.success('Base atualizada com Sucesso')
         }catch(err){
