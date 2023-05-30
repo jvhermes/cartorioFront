@@ -111,6 +111,9 @@ export default function Cadastrar({ atividadeList, departamentoList, tipoList, t
                     </Card.Group>
                 </div>
             </main>
+            <footer className={styles.footer}>
+                    <strong>Copyright</strong> SICART - CIT © 2023
+            </footer>
             <ModalCSV isOpen={showModalCSV} onRequestClose={closeModal} />
             <ModalCadastro isOpen={showModalCadastro} onRequestClose={closeModal} tipo={confirmType} cadastroList={cadastro} />
 

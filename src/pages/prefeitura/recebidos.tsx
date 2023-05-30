@@ -130,7 +130,7 @@ export default function DashboardPrefeitura({ processCartorioList, admin,avatar 
                 <title>MS CIT</title>
 
             </Head>
-            <main>
+            <main className={styles.main}>
                 <SidebarPrefeitura admin={admin} avatar={avatar}/>
                 <div className={styles.container} >
                     <div className={styles.title}>
@@ -270,7 +270,10 @@ export default function DashboardPrefeitura({ processCartorioList, admin,avatar 
                         </div>
                     </section>
                 </div>
-            </main>
+            </main> 
+            <footer className={styles.footer}>
+                    <strong>Copyright</strong> SICART - CIT © 2023
+            </footer>
 
             {modalProcessoCartorioOpen && (
                 <ModalProcessCartorioView isOpen={modalProcessoCartorioOpen} onRequestClose={closeModal} processo={modalProcessoCartorio} />

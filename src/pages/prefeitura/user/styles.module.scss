@@ -1,5 +1,7 @@
 
-
+.main{
+    height:95vh;
+}
 .container{
     display: flex;
     align-items: center;
@@ -20,7 +22,12 @@
 .image{
     padding: 1rem 0;
 }
-
+.footer{
+    bottom: 0;
+    padding: 1rem;
+    color:var(--text2);
+    background-color: var(--white);
+}
 .title{
     padding: 2rem;
     background-color: var(--white);

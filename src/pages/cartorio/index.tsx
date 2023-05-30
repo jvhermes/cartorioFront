@@ -1,4 +1,5 @@
 import Head from "next/head"
+
 import { canSSRAuth } from "../../utils/canSSRAuth"
 import { FormEvent, useState } from "react"
 import { SidebarCartorio } from "../../components/SidebarCartorio"
@@ -10,7 +11,7 @@ import { Input, Button, Icon } from 'semantic-ui-react'
 
 import { ModalProcessCartorioEnviado } from "../../components/Modal/Processo-Cartorio/ModalProcessCartorioEnviado"
 import { ModalNewProcess } from "../../components/Modal/Processo-Cartorio/ModalNewProcess"
-import { ItemProcessoCartorioProps,ItemCadastroProps,ItemLoteProps } from "../prefeitura"
+import { ItemProcessoCartorioProps, ItemCadastroProps, ItemLoteProps } from "../prefeitura"
 
 import Modal from "react-modal"
 
@@ -24,14 +25,14 @@ interface DashboardProps {
     setorList: ItemCadastroProps[];
     tipoList: ItemCadastroProps[];
     admin: boolean;
-    avatar:string
+    avatar: string
 }
 
 Modal.setAppElement("#__next")
 
 
 
-export default function DashboardPrefeitura({ processList, setorList, tipoList, admin,avatar }: DashboardProps) {
+export default function DashboardPrefeitura({ processList, setorList, tipoList, admin, avatar }: DashboardProps) {
 
     const [processos, setProcessos] = useState(processList || []);
     const [loteList, setLoteList] = useState<ItemLoteProps[]>()
@@ -42,7 +43,7 @@ export default function DashboardPrefeitura({ processList, setorList, tipoList, 
 
     const [proprietario, setProprietario] = useState("")
     const [dataInicial, setDataInicial] = useState("")
-   
+
     const [bairro, setBairro] = useState("")
     const [quadra, setQuadra] = useState("")
     const [lote, setLote] = useState("")
@@ -99,7 +100,7 @@ export default function DashboardPrefeitura({ processList, setorList, tipoList, 
 
     async function handleFilter(event: FormEvent) {
         event.preventDefault();
-        if ( proprietario === "" && dataInicial === ""  && bairro === "" && quadra === "" && lote === "") {
+        if (proprietario === "" && dataInicial === "" && bairro === "" && quadra === "" && lote === "") {
             return
         }
 
@@ -121,9 +122,9 @@ export default function DashboardPrefeitura({ processList, setorList, tipoList, 
 
             const ini = item.criado_em;
 
-       
 
-            return prop.includes(searchPropr)  && bai.includes(searchBairro) && qua.includes(searchQuadra) && lot.includes(searchLote) && ini.includes(searchInicial) ;
+
+            return prop.includes(searchPropr) && bai.includes(searchBairro) && qua.includes(searchQuadra) && lot.includes(searchLote) && ini.includes(searchInicial);
         })
 
         setProcessoFilter(newProcessFilter)
@@ -141,134 +142,135 @@ export default function DashboardPrefeitura({ processList, setorList, tipoList, 
                 <title>MS CIT</title>
 
             </Head>
-
-            <main>
-                <SidebarCartorio avatar={avatar} admin={admin} />
-                <div className={styles.container} >
-                    <div className={styles.title}>
-                        <div>
-                            <h1>Processos Enviados</h1>
-                            <p>Listagem de processos enviados para a prefeitura não concluídos</p>
+         
+                <main >
+                    <SidebarCartorio avatar={avatar} admin={admin} />
+                    <div className={styles.container} >
+                        <div className={styles.title}>
+                            <div>
+                                <h1>Processos Enviados</h1>
+                                <p>Listagem de processos enviados para a prefeitura não concluídos</p>
+                            </div>
+                            <Button color="blue" onClick={openNewProcessModal}>Novo Processo</Button>
                         </div>
-                        <Button color="blue" onClick={openNewProcessModal}>Novo Processo</Button>
+                        <section className={styles.content}>
+                            <form className={styles.filter} onSubmit={handleFilter}>
+
+                                <div className={styles.inputArea}>
+                                    <Input type="text" placeholder="Propietário" value={proprietario} onChange={(e) => { setProprietario(e.target.value) }} />
+
+                                </div>
+
+                                <div className={styles.inputArea}>
+                                    <Input type="search" list="bairro" placeholder="Bairro" value={bairro} onChange={(e) => setBairro(e.target.value)} />
+                                    <datalist id="bairro" >
+                                        {processos.map((item) => {
+                                            return (
+                                                <option key={item.id} value={item.lote.bairro}></option>
+                                            )
+                                        })}
+                                    </datalist>
+                                </div>
+                                <div className={styles.inputArea}>
+                                    <Input type="search" list="quadra" placeholder="Quadra" value={quadra} onChange={(e) => setQuadra(e.target.value)} />
+                                    <datalist id="quadra" >
+                                        {processos.filter((item) => {
+
+                                            const searchBairro = bairro.toLowerCase();
+                                            const bair = item.lote.bairro;
+
+                                            return searchBairro && bair.includes(searchBairro);
+                                        }).map((item) => {
+                                            return (
+                                                <option key={item.id} value={item.lote.quadra}></option>
+                                            )
+                                        })}
+                                    </datalist>
+                                </div>
+
+                                <div className={styles.inputArea}>
+                                    <Input type="search" list="lote" placeholder="Lote" value={lote} onChange={(e) => setLote(e.target.value)} />
+                                    <datalist id="lote" >
+                                        {processos.filter((item) => {
+
+                                            const searchBairro = bairro.toLowerCase();
+                                            const bair = item.lote.bairro;
+
+                                            const searchQuadra = quadra.toLowerCase();
+                                            const qua = item.lote.quadra;
+
+
+                                            return searchBairro && bair.includes(searchBairro) && searchQuadra && qua.includes(searchQuadra);
+                                        }).map((item) => {
+                                            return (
+                                                <option key={item.id} value={item.lote.lote}></option>
+                                            )
+                                        })}
+                                    </datalist>
+                                </div>
+                                <div className={styles.inputArea}>
+
+                                    <Input type={tipoDataInicial} onFocus={() => { setTipoDataInicial("date") }} onBlur={() => { setTipoDataInicial("text") }}
+                                        value={dataInicial} onChange={(e) => setDataInicial(e.target.value)} placeholder="Data Inicial" />
+                                </div>
+
+                                <div className={styles.inputArea}>
+                                    <Button color="grey" onClick={() => setProcessoFilter(processos)}>
+                                        Pesquisar
+                                        <Icon className={styles.buttonIcon} name="search"></Icon>
+                                    </Button>
+                                </div>
+
+                            </form>
+
+                            <div>
+                                <ul>
+                                    <li className={styles.processTitleEnv}>
+                                        <span >Tipo de Processo</span>
+                                        <span >Propietário</span>
+                                        <span >Bairro</span>
+                                        <span >Quadra</span>
+                                        <span >Lote</span>
+                                        <span >Criação</span>
+
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className={styles.processList}>
+                                <ul>
+
+                                    {processoFilter.map((item, index) => {
+                                        return (
+                                            <li value={index} key={item.id} className={styles.processItem} >
+                                                <button className={styles.processContentEnv} onClick={() => openProcessModal(item.id)}>
+                                                    <span>{item.tipo.nome}</span>
+                                                    <span>{item.lote.proprietario}</span>
+                                                    <span>{item.lote.bairro}</span>
+                                                    <span>{item.lote.quadra}</span>
+                                                    <span>{item.lote.lote}</span>
+                                                    <span>{moment(item.criado_em).format("DD/MM/YYYY")}</span>
+                                                </button>
+                                            </li>
+                                        )
+                                    })}
+                                </ul>
+                            </div>
+                        </section>
+
                     </div>
-                    <section className={styles.content}>
-                        <form className={styles.filter} onSubmit={handleFilter}>
 
-                            <div className={styles.inputArea}>
-                                <Input type="text" placeholder="Propietário" value={proprietario} onChange={(e) => { setProprietario(e.target.value) }} />
-
-                            </div>
-
-                            <div className={styles.inputArea}>
-                                <Input type="search" list="bairro" placeholder="Bairro" value={bairro} onChange={(e) => setBairro(e.target.value)} />
-                                <datalist id="bairro" >
-                                    {processos.map((item) => {
-                                        return (
-                                            <option key={item.id} value={item.lote.bairro}></option>
-                                        )
-                                    })}
-                                </datalist>
-                            </div>
-                            <div className={styles.inputArea}>
-                                <Input type="search" list="quadra" placeholder="Quadra" value={quadra} onChange={(e) => setQuadra(e.target.value)} />
-                                <datalist id="quadra" >
-                                    {processos.filter((item) => {
-
-                                        const searchBairro = bairro.toLowerCase();
-                                        const bair = item.lote.bairro;
-
-                                        return searchBairro && bair.includes(searchBairro);
-                                    }).map((item) => {
-                                        return (
-                                            <option key={item.id} value={item.lote.quadra}></option>
-                                        )
-                                    })}
-                                </datalist>
-                            </div>
-
-                            <div className={styles.inputArea}>
-                                <Input type="search" list="lote" placeholder="Lote" value={lote} onChange={(e) => setLote(e.target.value)} />
-                                <datalist id="lote" >
-                                    {processos.filter((item) => {
-
-                                        const searchBairro = bairro.toLowerCase();
-                                        const bair = item.lote.bairro;
-
-                                        const searchQuadra = quadra.toLowerCase();
-                                        const qua = item.lote.quadra;
-
-
-                                        return searchBairro && bair.includes(searchBairro) && searchQuadra && qua.includes(searchQuadra);
-                                    }).map((item) => {
-                                        return (
-                                            <option key={item.id} value={item.lote.lote}></option>
-                                        )
-                                    })}
-                                </datalist>
-                            </div>
-                            <div className={styles.inputArea}>
-
-                                <Input type={tipoDataInicial} onFocus={() => { setTipoDataInicial("date") }} onBlur={() => { setTipoDataInicial("text") }}
-                                    value={dataInicial} onChange={(e) => setDataInicial(e.target.value)} placeholder="Data Inicial" />
-                            </div>
-                    
-                            <div className={styles.inputArea}>
-                                <Button color="grey" onClick={() => setProcessoFilter(processos)}>
-                                    Pesquisar
-                                    <Icon className={styles.buttonIcon} name="search"></Icon>
-                                </Button>
-                            </div>
-
-                        </form>
-
-                        <div>
-                            <ul>
-                                <li className={styles.processTitleEnv}>
-                                    <span >Tipo de Processo</span>
-                                    <span >Propietário</span>
-                                    <span >Bairro</span>
-                                    <span >Quadra</span>
-                                    <span >Lote</span>
-                                    <span >Criação</span>
-
-                                </li>
-                            </ul>
-                        </div>
-                        <div className={styles.processList}>
-                            <ul>
-
-                                {processoFilter.map((item, index) => {
-                                    return (
-                                        <li value={index} key={item.id} className={styles.processItem} >
-                                            <button className={styles.processContentEnv} onClick={() => openProcessModal(item.id)}>
-                                                <span>{item.tipo.nome}</span>
-                                                <span>{item.lote.proprietario}</span>
-                                                <span>{item.lote.bairro}</span>
-                                                <span>{item.lote.quadra}</span>
-                                                <span>{item.lote.lote}</span>
-                                                <span>{moment(item.criado_em).format("DD/MM/YYYY")}</span>
-                                            </button>
-                                        </li>
-                                    )
-                                })}
-                            </ul>
-                        </div>
-                    </section>
-
-                </div>
-
-            </main>
-            <footer className={styles.footer}>
-                <strong>Copyright</strong> SICART - CIT © 2023
-            </footer>
+                </main>
+                <footer className={styles.footer}>
+                    <strong>Copyright</strong> SICART - CIT © 2023
+                </footer>
+    
             {modalProcesoOpen && (
                 <ModalProcessCartorioEnviado isOpen={modalProcesoOpen} onRequestClose={closeModal} processo={modalProcesso} />
 
             )}
             {modalNewProcessoOpen && (
                 <ModalNewProcess isOpen={modalNewProcessoOpen} onRequestClose={closeModal} tipoList={tipoList}
-                    setorList={setorList}  loteList={loteList} />
+                    setorList={setorList} loteList={loteList} />
             )}
 
 
@@ -286,7 +288,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
 
     const response = await apiClient.get("/me")
 
-    const { tipo, departamento, admin,avatar } = response.data;
+    const { tipo, departamento, admin, avatar } = response.data;
 
     if (tipo === '2') {
         return {
@@ -319,7 +321,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
             setorList: responseSetor.data,
             tipoList: responseTipo.data,
             admin: admin,
-            avatar:avatar
+            avatar: avatar
         }
     }
 

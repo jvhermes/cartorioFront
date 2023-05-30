@@ -123,6 +123,9 @@ export default function Seguranca({ userList, perfilList, setorList, departament
                     </div>
                 </div>
             </main>
+            <footer className={styles.footer}>
+                    <strong>Copyright</strong> SICART - CIT © 2023
+            </footer>
             {modalUserOpen && (
             <ModalUser isOpen={modalUserOpen} onRequestClose={closeModal} perfilList={perfilList} setorList={setorList} departamentoList={departamentoList} />
             )}

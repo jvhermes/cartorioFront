@@ -128,8 +128,8 @@ export default function DashboardPrefeitura({ processList, admin, setorList,avat
                 <title>MS CIT</title>
 
             </Head>
-
-            <main>
+            
+            <main >
                 <SidebarCartorio admin={admin}  avatar={avatar} />
                 <div className={styles.container} >
                     <div className={styles.title}>

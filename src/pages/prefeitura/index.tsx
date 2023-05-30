@@ -53,8 +53,8 @@ export type ItemProcessoCartorioProps = {
     observacao: string;
     criado_em: string;
     prazo: string;
-    respondido_em:string;
-    ativo:boolean;
+    respondido_em: string;
+    ativo: boolean;
     atividade: {
         id: string;
         nome: string;
@@ -94,10 +94,10 @@ export type Reenvio = {
 export type ItemAprovacaoProps = {
     id: string;
     observacao: string;
-    processo_id:number;
+    processo_id: number;
     descricao: DescricaoAprovacao[];
     reenvio: Reenvio[];
-    alvara:string;
+    alvara: string;
 }
 
 export type Lote = {
@@ -121,11 +121,11 @@ export type ItemProcessProps = {
     prazo: string;
     criado_em: string;
     respondido: boolean;
-    respondido_em:string;
-    ativo:boolean;
+    respondido_em: string;
+    ativo: boolean;
     texto: string;
     ano: string;
-    atrasado:boolean;
+    atrasado: boolean;
     atividade: {
         id: string;
         nome: string;
@@ -144,7 +144,7 @@ export type ItemProcessProps = {
     }
     lote: Lote[];
     descricao: DescricaoPrefeitura[];
-    aprovacao:ItemAprovacaoProps;
+    aprovacao: ItemAprovacaoProps;
 }
 
 export type ItemCadastroProps = {
@@ -160,14 +160,14 @@ interface DashboardProps {
     tipoList: ItemCadastroProps[];
     setorList: ItemCadastroProps[];
     admin: boolean;
-    avatar:string
+    avatar: string
 }
 
 Modal.setAppElement("#__next")
 
 
 
-export default function DashboardPrefeitura({ processList, atividadeList, departamentoList, tipoList,setorList, admin,avatar }: DashboardProps) {
+export default function DashboardPrefeitura({ processList, atividadeList, departamentoList, tipoList, setorList, admin, avatar }: DashboardProps) {
 
     const [processos, setProcessos] = useState(processList || []);
     const [loteList, setLoteList] = useState<ItemLoteProps[]>()
@@ -288,7 +288,7 @@ export default function DashboardPrefeitura({ processList, atividadeList, depart
 
             </Head>
 
-            <main>
+            <main className={styles.main}>
                 <SidebarPrefeitura admin={admin} avatar={avatar} />
                 <div className={styles.container} >
                     <div className={styles.title}>
@@ -413,9 +413,9 @@ export default function DashboardPrefeitura({ processList, atividadeList, depart
                                                 <span>{moment(item.criado_em).format("DD/MM/YYYY")}</span>
                                                 <span>{moment(item.prazo).format("DD/MM/YYYY")}</span>
                                                 {item.atrasado && (<span className={styles.atrasadoResp}>Resp c/ atraso</span>) || (
-                                                         <span>{item.respondido && (<span className={styles.respondido}>respondido</span>)
-                                                         || moment(item.prazo).diff(dataAtual, 'days') < 0 && ( <span className={styles.atrasado}>expirado</span> ) 
-                                                         || <span className={styles.pendente}>pendente</span> } </span>
+                                                    <span>{item.respondido && (<span className={styles.respondido}>respondido</span>)
+                                                        || moment(item.prazo).diff(dataAtual, 'days') < 0 && (<span className={styles.atrasado}>expirado</span>)
+                                                        || <span className={styles.pendente}>pendente</span>} </span>
                                                 )}
                                             </button>
                                         </li>
@@ -431,6 +431,7 @@ export default function DashboardPrefeitura({ processList, atividadeList, depart
             <footer className={styles.footer}>
                 <strong>Copyright</strong> SICART - CIT © 2023
             </footer>
+
             {modalProcesoOpen && (
                 <ModalProcess isOpen={modalProcesoOpen} onRequestClose={closeModal} processo={modalProcesso} setorList={setorList} />
 
@@ -455,7 +456,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
 
     const response = await apiClient.get("/me")
 
-    const { tipo, setor, admin,avatar } = response.data;
+    const { tipo, setor, admin, avatar } = response.data;
 
     if (tipo === '2') {
         return {
@@ -493,9 +494,9 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
             atividadeList: responseAtividade.data,
             departamentoList: responseDepartamento.data,
             tipoList: responseTipo.data,
-            setorList:responseSetor.data,
+            setorList: responseSetor.data,
             admin: admin,
-            avatar:avatar
+            avatar: avatar
         }
     }
 
