@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react"
 import { SidebarPrefeitura } from "../../../components/SidebarPrefeitura"
 import styles from "./styles.module.scss"
 
-import { Input, Button, Header, Sidebar, Icon } from 'semantic-ui-react'
+import { Input, Button, Pagination, Icon } from 'semantic-ui-react'
 
 import { ModalProcess } from "../../../components/Modal/Processo-P/ModalProcess"
 
@@ -19,17 +19,18 @@ import { ItemCadastroProps, ItemProcessProps } from ".."
 interface DashboardProps {
     processList: ItemProcessProps[];
     admin: boolean;
-    avatar:string;
-    setorList:ItemCadastroProps[]
+    avatar: string;
+    setorList: ItemCadastroProps[]
 }
 
 Modal.setAppElement("#__next")
 
 
 
-export default function HistoricoPrefeitura({ processList, admin,avatar,setorList }: DashboardProps) {
+export default function HistoricoPrefeitura({ processList, admin, avatar, setorList }: DashboardProps) {
 
     const [processos, setProcessos] = useState(processList || []);
+
 
 
     //filtro
@@ -41,29 +42,38 @@ export default function HistoricoPrefeitura({ processList, admin,avatar,setorLis
     const [quadra, setQuadra] = useState("")
     const [lote, setLote] = useState("")
 
-    const dataAtual = moment()
-
     const [tipoDataInicial, setTipoDataInicial] = useState("text")
     const [tipoDataFinal, setTipoDataFinal] = useState("text")
 
     const [modalProcesso, setModalProcesso] = useState<ItemProcessProps>()
     const [modalProcesoOpen, setModalProcessoOpen] = useState(false)
 
-    const [processoFilter, setProcessoFilter] = useState(processos)
+    const pag = processList.slice(0, 18)
 
+    const [processoFilter, setProcessoFilter] = useState(pag)
+
+    //paginas
+
+    const maximo = processList.length / 18
+    const [atual, setAtual] = useState(1)
 
     function closeModal() {
         setModalProcessoOpen(false);
-
-
     }
 
+    function changePage(data) {
 
+        setAtual(data.activePage)
+        console.log(data.activePage)
+        const calculo = data.activePage - 1
+        const pagNova = processList.slice(calculo * 18, calculo * 18 + 18)
+        setProcessoFilter(pagNova)
+
+    }
 
     async function openProcessModal(id: number) {
 
         const apiCliente = setupAPIClient();
-
 
         const response = await apiCliente.get("/processo/detalhe", {
             params: {
@@ -258,15 +268,18 @@ export default function HistoricoPrefeitura({ processList, admin,avatar,setorLis
                                                 <span>{moment(item.criado_em).format("DD/MM/YYYY")}</span>
                                                 <span>{moment(item.prazo).format("DD/MM/YYYY")}</span>
                                                 {item.atrasado && (<span className={styles.atrasadoResp}>Concl c/ atraso</span>) || (
-                                                         <span>{item.respondido && (<span className={styles.respondido}>Concluído</span>)
-                                                         || (<span className={styles.excluido}>Excluido</span>)
-                                                         } </span>
+                                                    <span>{item.respondido && (<span className={styles.respondido}>Concluído</span>)
+                                                        || (<span className={styles.excluido}>Excluido</span>)
+                                                    } </span>
                                                 )}
                                             </button>
                                         </li>
                                     )
                                 })}
                             </ul>
+                        </div>
+                        <div className={styles.pagination}>
+                            <Pagination totalPages={maximo} activePage={atual} onPageChange={(e, data) => changePage(data)}></Pagination>
                         </div>
                     </section>
 
@@ -277,7 +290,7 @@ export default function HistoricoPrefeitura({ processList, admin,avatar,setorLis
                 <strong>Copyright</strong> SICART - CIT © 2023
             </footer>
             {modalProcesoOpen && (
-                <ModalProcess isOpen={modalProcesoOpen} onRequestClose={closeModal} processo={modalProcesso} setorList={setorList}/>
+                <ModalProcess isOpen={modalProcesoOpen} onRequestClose={closeModal} processo={modalProcesso} setorList={setorList} />
 
             )}
         </>
@@ -295,7 +308,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
 
     const { tipo, admin, avatar } = response.data;
 
-    if (tipo === '2' ) {
+    if (tipo === '2') {
         return {
             redirect: {
                 destination: "/cartorio",
@@ -312,8 +325,8 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
         props: {
             processList: responseProcess.data,
             admin: admin,
-            avatar:avatar,
-            setorList:responseSetor.data,
+            avatar: avatar,
+            setorList: responseSetor.data,
         }
     }
 

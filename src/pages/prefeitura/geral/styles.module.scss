@@ -44,7 +44,7 @@
     padding: 0 1rem;
     display: flex;
     min-height: 48.2rem;
-    max-height: 800px;
+    max-height: 60rem;
     flex-direction: column;
     justify-content: space-around;
     background-color: var(--white);
@@ -73,7 +73,7 @@
     height: 85%;
     display: flex;
     flex-direction: column;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     overflow: auto;
     .processItem{
         display: flex;
@@ -93,6 +93,12 @@
     padding-left: 1rem;
 }
 
+.pagination{
+    display: flex;
+    padding: 1rem 2rem;
+    justify-content: flex-end;
+ 
+}
 
 
 .processContent{

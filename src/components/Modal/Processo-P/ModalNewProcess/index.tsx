@@ -3,7 +3,6 @@ import Modal from 'react-modal'
 import { useState } from "react"
 import { Desmembramento } from "./desmembramento"
 import { Remembramento } from "./remembramento"
-import { Outro } from "./outro"
 import { Input,Dropdown,Button} from "semantic-ui-react"
 
 
@@ -32,12 +31,11 @@ export function ModalNewProcess({ isOpen, onRequestClose, atividadeList, departa
     const [tipos, setTipos] = useState(tipoList || []);
     const [lotes, setLotes] = useState(loteList || []);
     const [num_processo, setNum_processo] = useState("")
-    const [ano, setAno] = useState("")
+    const [ano, setAno] = useState("2023")
     const [criado_em, setCriado_em] = useState("")
 
     const [showDesmembramento, setShowDesmembramento] = useState(false)
     const [showRemembramento, setShowRemembramento] = useState(true)
-    const [showOutro, setShowOutro] = useState(false)
 
 
     function handleChangeTipo(data) {
@@ -46,22 +44,16 @@ export function ModalNewProcess({ isOpen, onRequestClose, atividadeList, departa
         if (tipos[data.value].nome === "remembramento") {
             setShowDesmembramento(false)
             setShowRemembramento(true)
-            setShowOutro(false)
             setTitulo("Remembramento")
             return
         }
         if (tipos[data.value].nome === "desmembramento") {
             setShowRemembramento(false)
             setShowDesmembramento(true)
-            setShowOutro(false)
+    
             setTitulo("Desmembramento")
             return
         }
-        setShowOutro(true)
-        setShowDesmembramento(false)
-        setShowRemembramento(false)
-        setTitulo("")
-        return
 
     }
 
@@ -132,10 +124,6 @@ export function ModalNewProcess({ isOpen, onRequestClose, atividadeList, departa
             )}
             {showRemembramento && (
                 <Remembramento atividade={atividades[selectAtividade]} tipo={tipos[selectTipo]} departamentoList={departamentoList}
-                    loteList={lotes} numero_processo={num_processo} ano={ano} criado_em={criado_em} />
-            )}
-            {showOutro && (
-                <Outro atividade={atividades[selectAtividade]} tipo={tipos[selectTipo]} departamentoList={departamentoList}
                     loteList={lotes} numero_processo={num_processo} ano={ano} criado_em={criado_em} />
             )}
         </Modal>
