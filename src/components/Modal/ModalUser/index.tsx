@@ -33,7 +33,7 @@ export function ModalUser({ isOpen, onRequestClose, perfilList, setorList, depar
     const [setores, setSetores] = useState(setorList || [])
 
     const [showDepartamento, setShowDepartamento] = useState(false)
-    const [showSetor, setShowSetor] = useState(true)
+    const [showSetor, setShowSetor] = useState(false)
 
     async function handleNewUser(event: FormEvent) {
 
