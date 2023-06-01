@@ -51,13 +51,12 @@
 .userContent{
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 400px 350px 400px 300px 300px;
+    grid-template-columns: 4fr 3.5fr 4fr 3fr 3fr;
     border: none;
     background-color: transparent;
-    height: 35px;
     align-items: center;
     width: 100%;
-    padding: 0 1rem;
+    padding: 0.5 1rem;
     span{
         height: 30px;
         display: flex;
@@ -93,13 +92,12 @@
     border-radius: 0.1rem;
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 400px 350px 400px 300px 300px ;
+    grid-template-columns: 4fr 3.5fr 4fr 3fr 3fr;
     background-color: #d3d3d4;
-    height: 40px;
     align-items: center;
     width: 95%;
     margin: 1rem auto;
-    padding: 0 1rem;
+    padding: 0.5rem 1rem;
     span{
         display: flex;
         align-items: center;

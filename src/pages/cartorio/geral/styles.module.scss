@@ -31,7 +31,7 @@
 }
 
 .filter{
-    height: 150px;
+   
     padding: 2rem;
     display: flex;
     gap:1rem;
@@ -97,13 +97,12 @@
 .processContent{
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns:180px 350px 200px 200px 200px 300px 150px ;
+    grid-template-columns:2fr 3.5fr 2fr 2fr 2fr 3fr 1.5fr ;
     border: none;
     background-color: transparent;
-    height: 35px;
     align-items: center;
     width: 100%;
-    padding: 0 1rem;
+    padding: 0.5rem 1rem;
     span{
         height: 30px;
         display: flex;
@@ -134,13 +133,12 @@
     border-radius: 0.1rem;
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 180px 350px 200px 200px 200px 300px 150px ;
+    grid-template-columns: 2fr 3.5fr 2fr 2fr 2fr 3fr 1.5fr ;
     background-color: #d3d3d4;
-    height: 40px;
     align-items: center;
     width: 95%;
     margin: 1rem auto;
-    padding: 0 1rem;
+    padding: 0.5rem 1rem;
     span{
         display: flex;
         align-items: center;
@@ -157,53 +155,3 @@
     background-color: var(--white);
 }
 
-
-@media (max-width: 1500px){
-    .filter{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-     
-        height: 500px;
-        width: 100%;
-    }
-    .processSide{
-        width: 100%;
-    }
-    .processTitle{
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    }
-    .processContent{
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-        height: 60px;
-    }
-
- 
-}
-@media (max-width: 760px){
-
-    .filter{
-        display: grid;
-        grid-template-columns: 1fr;
-    }
-
-    .processTitle{
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
-        height: 90px;
-        padding: 5px;
-        span{
-            font-size: 1rem;
-        }
-    }
-    .processContent{
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
-        height: 70px;
-        
-    }
-    .processItem{
-        span{
-            margin: 0.3rem 0;
-        }
-    }
-}

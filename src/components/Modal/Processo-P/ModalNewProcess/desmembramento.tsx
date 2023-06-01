@@ -260,7 +260,7 @@ export function Desmembramento({ atividade, tipo, departamentoList, loteList, nu
                         </div>
                         <div>
                             <label htmlFor="inscricao">Insc. Imobiliaria:</label>
-                            <Input type="search" list="insc" id="inscricao" value={selectInsc} onChange={(e) => setSelectInsc(e.target.value)} />
+                            <Input clearable type="search" list="insc" id="inscricao" value={selectInsc} onChange={(e) => setSelectInsc(e.target.value)} />
                             <datalist id="insc" >
                                 {loteList.map((item) => {
                                     return (
@@ -271,7 +271,7 @@ export function Desmembramento({ atividade, tipo, departamentoList, loteList, nu
                         </div>
                         <div>
                             <label htmlFor="codigo_imovel">Cod. Imóvel:</label>
-                            <Input type="search" list="codigo" id="codigo_imovel" value={selectCodigo} onChange={(e) => setSelectCodigo(e.target.value)} />
+                            <Input clearable type="search" list="codigo" id="codigo_imovel" value={selectCodigo} onChange={(e) => setSelectCodigo(e.target.value)} />
                             <datalist id="codigo" >
                                 {loteList.map((item) => {
                                     return (
@@ -328,7 +328,7 @@ export function Desmembramento({ atividade, tipo, departamentoList, loteList, nu
                 </div>
             </section>
             <section className={styles.contentDescricao}>
-                <h3>Novas Descrições:</h3>
+                <h3>Novos Lotes:</h3>
                 <div className={styles.number}>
                     <span>Número de Lotes: {numLotes}</span>
                     <button onClick={handlePlus}><AiOutlinePlus size={30} /></button>

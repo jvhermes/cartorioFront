@@ -256,7 +256,7 @@ export function Remembramento({ atividade, tipo, departamentoList, loteList, num
                         </div>
                         <div>
                             <label htmlFor="inscricao">Insc. Imobiliaria:</label>
-                            <Input type="search" list="insc" id="inscricao" value={selectInsc} onChange={(e, data) => handleChangeInsc(data)} />
+                            <Input clearable type="search" list="insc" id="inscricao" value={selectInsc} onChange={(e, data) => handleChangeInsc(data)} />
                             <datalist id="insc" >
                                 {loteList.map((item) => {
                                     return (
@@ -267,7 +267,7 @@ export function Remembramento({ atividade, tipo, departamentoList, loteList, num
                         </div>
                         <div>
                             <label htmlFor="codigo_imovel">Cod. Imóvel:</label>
-                            <Input type="search" list="codigo" id="codigo_imovel" value={selectCodigo} onChange={(e, data) => handleChangeCod(data)} />
+                            <Input clearable type="search" list="codigo" id="codigo_imovel" value={selectCodigo} onChange={(e, data) => handleChangeCod(data)} />
                             <datalist id="codigo" >
                                 {loteList.map((item) => {
                                     return (
@@ -335,7 +335,7 @@ export function Remembramento({ atividade, tipo, departamentoList, loteList, num
 
             </section>
             <section className={styles.contentDescricao}>
-                <h3>Novas Descrições:</h3>
+                <h3>Novos Lotes:</h3>
                 <div className={styles.tableContainer}>
 
                     <Table celled size="large" className={styles.table}>

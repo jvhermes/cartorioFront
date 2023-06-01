@@ -31,7 +31,6 @@
 }
 
 .filter{
-    height: 150px;
     padding: 2rem;
     display: flex;
     gap:1rem;
@@ -101,10 +100,10 @@
     gap: 20px;
     border: none;
     background-color: transparent;
-    height: 35px;
+
     align-items: center;
     width: 100%;
-    padding: 0 1rem;
+    padding: 0.5 1rem;
   
     span{
         height: 30px;
@@ -151,10 +150,10 @@
     gap: 20px;
     border: none;
     background-color: transparent;
-    height: 35px;
+  
     align-items: center;
     width: 100%;
-    padding: 0 1rem;
+    padding: 0.5 1rem;
   
     span{
         height: 30px;
@@ -174,11 +173,10 @@
     grid-template-columns: 2fr 1.5fr 3fr 2fr 1fr 1fr 1.5fr 1.5fr 1.5fr;
     gap: 20px;
     background-color: #d3d3d4;
-    height: 40px;
     align-items: center;
     width: 95%;
     margin: 1rem auto;
-    padding: 0 1rem;
+    padding:0.5rem 1rem;
     span{
         display: flex;
         align-items: center;
@@ -196,11 +194,10 @@
     grid-template-columns:  3fr 2.5fr 3fr 2fr 2fr 2fr 2fr ;
     gap: 20px;
     background-color: #d3d3d4;
-    height: 40px;
     align-items: center;
     width: 95%;
     margin: 1rem auto;
-    padding: 0 1rem;
+    padding: 0.5rem 1rem;
     span{
         display: flex;
         align-items: center;
@@ -218,52 +215,3 @@
 }
 
 
-@media (max-width: 1500px){
-    .filter{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        height: 500px;
-        width: 100%;
-    }
-    .processSide{
-        width: 100%;
-    }
-    .processTitle{
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ;
-        height: 60px;
-    }
-    .processContent{
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-        height: 60px;
-    }
-
- 
-}
-@media (max-width: 760px){
-
-    .filter{
-        display: grid;
-        grid-template-columns: 1fr;
-    }
-
-    .processTitle{
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
-        height: 90px;
-        padding: 5px;
-        span{
-            font-size: 1rem;
-        }
-    }
-    .processContent{
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
-        height: 70px;
-        
-    }
-    .processItem{
-        span{
-            margin: 0.3rem 0;
-        }
-    }
-}
