@@ -86,9 +86,15 @@ export function AuthProvider({children}: AuthProviderProps){
             api.defaults.headers["Authorization"] = `Bearer ${token}`
 
             if(tipo === "2"){
-                Router.push("/cartorio")
+                setTimeout(() =>{ 
+                    Router.push("/cartorio")
+                },300)
+                
             }else{
-                Router.push("/prefeitura")
+                setTimeout(()=> {
+                    Router.push("/prefeitura")
+                },300)
+            
             }
         }catch(err){
             toast.error("Usuario não cadastrado!!!")
