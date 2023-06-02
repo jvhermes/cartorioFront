@@ -357,7 +357,7 @@ export function Remembramento({ atividade, tipo, departamentoList, loteList, num
                 </div>
 
                 <div className={styles.encaminhar}>
-                    <label htmlFor="encaminhar">Encaminhar para (departamentos)</label>
+                    <label htmlFor="encaminhar">Encaminhar para: </label>
                     <Dropdown id="encaminhar" selection onChange={(e, data) => handleChangeDepartamento(data)} value={selectDepartamento} options={
                         departamentos.map((item, index) => {
                             return (

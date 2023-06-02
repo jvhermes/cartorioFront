@@ -83,7 +83,7 @@ export default function Cadastrar({ atividadeList, departamentoList, tipoList, t
                             <p></p>
                         </Card>
                         <Card centered className={styles.cadastroContent}>
-                            <h2>Departamentos</h2>
+                            <h2>Cartórios</h2>
                             <Button onClick={() => handleCadastro(2, departamento)}>Editar</Button>
                             <p></p>
                         </Card>
@@ -99,7 +99,7 @@ export default function Cadastrar({ atividadeList, departamentoList, tipoList, t
                             <p></p>
                         </Card >
                         <Card centered className={styles.cadastroContent}>
-                            <h2>Setores</h2>
+                            <h2>Setores (prefeitura)</h2>
                             <Button onClick={() => handleCadastro(5, setor)}>Editar</Button>
                             <p></p>
                         </Card>
