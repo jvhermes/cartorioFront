@@ -311,7 +311,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
     if (tipo === '2') {
         return {
             redirect: {
-                destination: "/cartorio",
+                destination: "/cartorio/geral",
                 permanent: false
             }
         }
