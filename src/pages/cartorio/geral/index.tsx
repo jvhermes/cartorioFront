@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react"
 import { SidebarCartorio } from "../../../components/SidebarCartorio"
 import styles from "./styles.module.scss"
 
-import { Input, Button, Icon } from 'semantic-ui-react'
+import { Input, Button, Icon,Pagination } from 'semantic-ui-react'
 
 
 import { ModalProcessCartorioEnviado } from "../../../components/Modal/Processo-Cartorio/ModalProcessCartorioEnviado"
@@ -47,11 +47,29 @@ export default function HistoricoCartorio({ processList, admin, avatar }: Dashbo
     const [modalProcesoOpen, setModalProcessoOpen] = useState(false)
 
 
-    const [processoFilter, setProcessoFilter] = useState(processos)
+    const pag = processList.slice(0, 18)
+
+    const [processoFilter, setProcessoFilter] = useState(pag)
+
+    //paginas
+
+    const maximo = processList.length / 18
+    const [atual, setAtual] = useState(1)
+
 
 
     function closeModal() {
         setModalProcessoOpen(false);
+
+    }
+
+    function changePage(data) {
+
+        setAtual(data.activePage)
+        console.log(data.activePage)
+        const calculo = data.activePage - 1
+        const pagNova = processList.slice(calculo * 18, calculo * 18 + 18)
+        setProcessoFilter(pagNova)
 
     }
 
@@ -232,6 +250,9 @@ export default function HistoricoCartorio({ processList, admin, avatar }: Dashbo
                                     )
                                 })}
                             </ul>
+                        </div>
+                        <div className={styles.pagination}>
+                            <Pagination totalPages={maximo} activePage={atual} onPageChange={(e, data) => changePage(data)}></Pagination>
                         </div>
                     </section>
 

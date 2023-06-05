@@ -37,15 +37,21 @@
     gap:1rem;
     flex-wrap: wrap;
 }
+.pagination{
+    display: flex;
+    padding: 1rem 2rem;
+    justify-content: flex-end;
+ 
+}
 
 .content{
     width: 97%;
     margin: 2rem;
     padding: 0 1rem;
     display: flex;
-    height: 900px;
+    min-height: 48.2rem;
+    max-height: 60rem;
     flex-direction: column;
-    justify-content: space-around;
     background-color: var(--white);
     border-radius: 0.1rem;
 }
