@@ -10,9 +10,9 @@ interface PdfRequest {
 }
 
 export default function processoPdf({ processo }: PdfRequest) {
+    
+    
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
-
 
 
     const descricaoPref = processo.descricao.map((item) => {
@@ -146,10 +146,8 @@ export default function processoPdf({ processo }: PdfRequest) {
         bold: true,
         margin: [15, 20, 0, 45]
         },
-        content: [details],
-        defaultStyle:{
-            font: 'Helvetica'
-        }
+        content: [details]
+
     }
 
 
