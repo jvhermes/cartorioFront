@@ -29,7 +29,6 @@ export function ModalCadastro({ isOpen, onRequestClose, cadastroList, tipo }: Mo
     const [showModalUpdate, setShowModalUpdate] = useState(false)
 
     const [nome, setNome] = useState("")
-    const [cadastro,setCadastro] = useState( cadastroList)
 
     async function handleNew() {
         const apiCliente = setupAPIClient();
@@ -40,8 +39,7 @@ export function ModalCadastro({ isOpen, onRequestClose, cadastroList, tipo }: Mo
                     nome
                 })
                 setNome("")
-                const newList = await apiCliente.get("/atividade/lista")
-                setCadastro(newList.data)
+          
             } catch {
                 setNome("")
                 toast.error("Não foi possível completar a ação")
@@ -156,7 +154,7 @@ export function ModalCadastro({ isOpen, onRequestClose, cadastroList, tipo }: Mo
                 <div className={styles.content}>
                     <h2>Listagem</h2>
                     <ul className={styles.cadastroElement}>
-                        {cadastro.map((item, index) => {
+                        {cadastroList.map((item, index) => {
                             return (
                                 <li value={index} key={item.id} className={styles.cadastroItem} >
                                     <p>{item.nome}</p>
