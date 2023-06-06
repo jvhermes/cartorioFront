@@ -11,15 +11,15 @@ import { HiOutlineMenu } from "react-icons/hi"
 
 interface SideBarRequest {
     admin: boolean;
-    avatar:string
+    avatar: string
 }
 
-export function SidebarCartorio({ admin,avatar }: SideBarRequest) {
+export function SidebarCartorio({ admin, avatar }: SideBarRequest) {
 
     const { signOut } = useContext(AuthContext)
     const [visible, setVisible] = useState<boolean>(false)
 
- 
+
 
     function toggleSidebar() {
         setVisible((prev) => !prev)
@@ -53,55 +53,59 @@ export function SidebarCartorio({ admin,avatar }: SideBarRequest) {
                 visible={visible}
                 className={styles.sidebar}
                 pagination
-            >   
+            >
                 <Menu.Item >
                     <Menu.Item header>
                         <Image circular centered src={`/avatar${avatar}.png`} size="tiny" />
                     </Menu.Item>
-                    <Menu.Menu>
-                        <Link href="/prefeitura/user"><Menu.Item link >Perfil</Menu.Item></Link>
-                    </Menu.Menu>
+
+                    <Link href="/prefeitura/user"><Menu.Item link >Perfil</Menu.Item></Link>
+
                 </Menu.Item>
                 <Menu.Item>
-                    <Menu.Item header>Processos </Menu.Item>
-                    <Menu.Menu>
-                        <Link href="/cartorio"><Menu.Item link >Enviados</Menu.Item></Link>
-                        <Link href="/cartorio/recebidos"> <Menu.Item link>Recebidos</Menu.Item></Link>
-                    </Menu.Menu>
-                </Menu.Item>
-
-                <Link href="/cartorio/geral">
-                    <Menu.Item link className={styles.menuItem}>
-                        <Icon name='history' />
-                        Histórico
+                    <Menu.Item header>
+                        <Icon name='box'></Icon>
+                        Processos Ativos
                     </Menu.Item>
-                </Link>
 
-                {admin && (
-                    <Link href="/prefeitura/cadastrar" >
+                    <Link href="/cartorio"><Menu.Item link >Enviados</Menu.Item></Link>
+                    <Link href="/cartorio/recebidos"> <Menu.Item link>Recebidos</Menu.Item></Link>
+
+                </Menu.Item>
+                <Menu.Item>
+                    <Link href="/cartorio/geral">
                         <Menu.Item link className={styles.menuItem}>
-                            <Icon name='configure' />
-                            Configurações
-                        </Menu.Item>
-                    </Link>)}
-
-
-                {admin && (
-                    <Link href="/prefeitura/usuarios">
-                        <Menu.Item link className={styles.menuItem}>
-                            <Icon name='users' />
-                            Usuarios
+                            <Icon name='history' />
+                            Histórico
                         </Menu.Item>
                     </Link>
-                )}
-                {admin && (
-                    <Link href="/prefeitura">
-                        <Menu.Item link className={styles.menuItem}>
-                            <Icon name='building' />
-                            Prefeitura
-                        </Menu.Item>
-                    </Link>
-                )}
+
+                    {admin && (
+                        <Link href="/prefeitura/cadastrar" >
+                            <Menu.Item link className={styles.menuItem}>
+                                <Icon name='configure' />
+                                Configurações
+                            </Menu.Item>
+                        </Link>)}
+
+
+                    {admin && (
+                        <Link href="/prefeitura/usuarios">
+                            <Menu.Item link className={styles.menuItem}>
+                                <Icon name='users' />
+                                Usuarios
+                            </Menu.Item>
+                        </Link>
+                    )}
+                    {admin && (
+                        <Link href="/prefeitura">
+                            <Menu.Item link className={styles.menuItem}>
+                                <Icon name='building' />
+                                Prefeitura
+                            </Menu.Item>
+                        </Link>
+                    )}
+                </Menu.Item>
             </Sidebar>
         </div>
     )

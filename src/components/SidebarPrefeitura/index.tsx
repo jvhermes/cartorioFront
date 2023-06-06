@@ -48,49 +48,53 @@ export function SidebarPrefeitura({ admin, avatar }: SideBarRequest) {
                     <Menu.Item header>
                         <Image circular centered src={`/avatar${avatar}.png`} size="tiny" />
                     </Menu.Item>
-                    <Menu.Menu>
-                        <Link href="/prefeitura/user"><Menu.Item link >Perfil</Menu.Item></Link>
-                    </Menu.Menu>
+
+                    <Link href="/prefeitura/user"><Menu.Item link >Perfil</Menu.Item></Link>
+
                 </Menu.Item>
                 <Menu.Item >
-                    <Menu.Item header>Processos Ativos </Menu.Item>
-                    <Menu.Menu>
-                        <Link href="/prefeitura"><Menu.Item link >Enviados</Menu.Item></Link>
-                        <Link href="/prefeitura/recebidos"> <Menu.Item link>Recebidos</Menu.Item></Link>
-                    </Menu.Menu>
-                </Menu.Item>
-                <Link href="/prefeitura/geral">
-                    <Menu.Item link className={styles.menuItem}>
-                        <Icon name='history' />
-                        Histórico
+                    <Menu.Item header>
+                        <Icon name='box'></Icon>Processos Ativos
                     </Menu.Item>
-                </Link>
 
-                {admin && (
-                    <Link href="/prefeitura/cadastrar" >
+                    <Link href="/prefeitura"><Menu.Item link >Enviados</Menu.Item></Link>
+                    <Link href="/prefeitura/recebidos"> <Menu.Item link>Recebidos</Menu.Item></Link>
+
+                </Menu.Item>
+                <Menu.Item>
+                    <Link href="/prefeitura/geral">
                         <Menu.Item link className={styles.menuItem}>
-                            <Icon name='configure' />
-                            Configurações
-                        </Menu.Item>
-                    </Link>)}
-
-
-                {admin && (
-                    <Link href="/prefeitura/usuarios">
-                        <Menu.Item link className={styles.menuItem}>
-                            <Icon name='users' />
-                            Usuarios
+                            <Icon name='history' />
+                            Histórico
                         </Menu.Item>
                     </Link>
-                )}
-                {admin && (
-                    <Link href="/cartorio">
-                        <Menu.Item link className={styles.menuItem}>
-                            <Icon name='building' />
-                            Cartorio
-                        </Menu.Item>
-                    </Link>
-                )}
+
+                    {admin && (
+                        <Link href="/prefeitura/cadastrar" >
+                            <Menu.Item link className={styles.menuItem}>
+                                <Icon name='configure' />
+                                Configurações
+                            </Menu.Item>
+                        </Link>)}
+
+
+                    {admin && (
+                        <Link href="/prefeitura/usuarios">
+                            <Menu.Item link className={styles.menuItem}>
+                                <Icon name='users' />
+                                Usuarios
+                            </Menu.Item>
+                        </Link>
+                    )}
+                    {admin && (
+                        <Link href="/cartorio">
+                            <Menu.Item link className={styles.menuItem}>
+                                <Icon name='building' />
+                                Cartorio
+                            </Menu.Item>
+                        </Link>
+                    )}
+                </Menu.Item>
             </Sidebar>
 
 
