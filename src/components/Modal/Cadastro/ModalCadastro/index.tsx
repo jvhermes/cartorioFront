@@ -29,7 +29,7 @@ export function ModalCadastro({ isOpen, onRequestClose, cadastroList, tipo }: Mo
     const [showModalUpdate, setShowModalUpdate] = useState(false)
 
     const [nome, setNome] = useState("")
-    const [cadastro,setCadastro] = useState( cadastroList || [])
+    const [cadastro,setCadastro] = useState( cadastroList)
 
     async function handleNew() {
         const apiCliente = setupAPIClient();
@@ -37,7 +37,6 @@ export function ModalCadastro({ isOpen, onRequestClose, cadastroList, tipo }: Mo
         if (tipo === 1) {
             try {
                 await apiCliente.post("/atividade", {
-
                     nome
                 })
                 setNome("")
