@@ -15,7 +15,7 @@ export default function processoPdf({ processo }: PdfRequest) {
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 
-    const descricaoPref = processo.descricao.map((item) => {
+    const descricaoPref = processo.descricaoLotes.map((item) => {
         return [
             { text: item.lote, fontSize: 9, margin: [0, 2, 0, 2] },
             { text: item.area, fontSize: 9, margin: [0, 2, 0, 2] },
