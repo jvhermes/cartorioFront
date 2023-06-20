@@ -107,8 +107,10 @@ export function ModalUser({ isOpen, onRequestClose, perfilList, setorList, depar
             padding: "30px",
             transform: "translate(-50%,-50%)",
             backgroundColor: "#F3F3F4",
-            width: "1100px",
-            height: "650px"
+            width: "1020px",
+            height: "800px",
+            maxWidth: "90vw",
+            maxHeight: "85vh"
 
         }
     }
