@@ -88,7 +88,7 @@ export function ModalUser({ isOpen, onRequestClose, perfilList, setorList, depar
             setShowSetor(false)
         }
 
-        if (perfis[data.value].nome === "usuario pref") {
+        if (perfis[data.value].nome === "usuario prefeitura") {
             setShowDepartamento(false)
             setShowSetor(true)
         }

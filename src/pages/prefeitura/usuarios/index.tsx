@@ -6,7 +6,7 @@ import styles from "./styles.module.scss"
 import { ModalUserEdit } from "../../../components/Modal/ModalUserEdit"
 import { ModalUser } from "../../../components/Modal/ModalUser"
 import { ItemCadastroProps } from ".."
-import { UpdateButton, DeleteButton } from "../../../components/UI/LittleButton"
+import { UserProps } from "../user"
 import { setupAPIClient } from "../../../services/api"
 import { SidebarPrefeitura } from "../../../components/SidebarPrefeitura"
 import { Image, Button } from "semantic-ui-react"
@@ -21,6 +21,12 @@ export type UserListProps = {
     perfil: {
         tipo: string;
         nome: string
+    };
+    departamento:{
+        nome:string;
+    };
+    setor:{
+        nome:string;
     }
 }
 
@@ -47,7 +53,7 @@ export default function Seguranca({ userList, perfilList, setorList, departament
 
     const [modalUserOpen, setModalUserOpen] = useState(false)
     const [modalUserEditOpen, setModalUserEditOpen] = useState(false)
-    const [user,setUser] = useState<UserListProps>()
+    const [user,setUser] = useState<UserProps>()
 
     function openModal() {
         setModalUserOpen(true)
@@ -97,6 +103,7 @@ export default function Seguranca({ userList, perfilList, setorList, departament
                                 <span >Nome</span>
                                 <span >Email</span>
                                 <span >Tipo</span>
+                                <span>Local</span>
                                 <span >Ativo</span>
                                 <span >Avatar</span>
                                
@@ -113,6 +120,7 @@ export default function Seguranca({ userList, perfilList, setorList, departament
                                             <span>{item.nome}</span>
                                             <span>{item.email}</span>
                                             <span>{item.perfil.nome}</span>
+                                            <span>{item.perfil.tipo === '1' && (<span>{item.setor.nome}</span>) || (item.perfil.tipo === '2' && (<span>{item.departamento.nome}</span>) || (<span>admin</span>) )}</span>
                                             <span >{item.ativo && (<span className={styles.ativo}>Sim</span>) || (<span className={styles.inativo}>Não</span>)}</span>
                                             <span> <Image src={`/avatar${item.avatar}.png`} size="mini"/></span>
                                         </button>
@@ -130,7 +138,7 @@ export default function Seguranca({ userList, perfilList, setorList, departament
             <ModalUser isOpen={modalUserOpen} onRequestClose={closeModal} perfilList={perfilList} setorList={setorList} departamentoList={departamentoList} />
             )}
             {modalUserEditOpen && (
-                  <ModalUserEdit isOpen={modalUserEditOpen} onRequestClose={closeModal} user={user}/>
+                  <ModalUserEdit isOpen={modalUserEditOpen} onRequestClose={closeModal} user={user} perfilList={perfilList} setorList={setorList} departamentoList={departamentoList}/>
             )}
           
         </>

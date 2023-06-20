@@ -1,29 +1,57 @@
 import styles from "./styles.module.scss"
 import Modal from 'react-modal'
 import { setupAPIClient } from "../../../services/api"
-import { FormEvent, useState } from "react"
-import { PerfilListProps } from "../../../pages/prefeitura/user"
+import { useState } from "react"
 import { ItemCadastroProps } from "../../../pages/prefeitura"
+import { PerfilListProps } from "../../../pages/prefeitura/user"
 import { toast } from "react-toastify"
-import { UserListProps } from "../../../pages/prefeitura/usuarios"
+import { UserProps } from "../../../pages/prefeitura/user"
 import { Input, Button, Form, Dropdown, Image } from "semantic-ui-react"
+import { ModalSenha } from "../ModalSenha"
 
 interface ModalConfirmProps {
     isOpen: boolean;
     onRequestClose: () => void;
-    user: UserListProps
+    user: UserProps;
+    setorList: ItemCadastroProps[];
+    departamentoList: ItemCadastroProps[];
+    perfilList: PerfilListProps[];
 }
 
-export function ModalUserEdit({ isOpen, onRequestClose, user }: ModalConfirmProps) {
+export function ModalUserEdit({ isOpen, onRequestClose, user,perfilList,departamentoList,setorList }: ModalConfirmProps) {
 
     const [nome, setNome] = useState(user.nome)
     const [email, setEmail] = useState(user.email)
     const [value, setValue] = useState(user.avatar)
     const [ativo, setAtivo] = useState(user.ativo)
 
+    const [modalSenhaOpen,setModalSenhaOpen] = useState(false)
+
+
+    const ind = perfilList.map((item,index) =>{
+        if(item.nome === user.nome_tipo){
+            return(index)
+        }
+    })
+
+    const [perfilSelect, setPerfilSelect] = useState(0)
+    const [setorSelect, setSetorSelect] = useState(0)
+    const [departametoSelect, setDepartamentoSelect] = useState(0)
+
+    const [perfis, setPerfis] = useState(perfilList || [])
+    const [departamentos, setDepartamentos] = useState(departamentoList || [])
+    const [setores, setSetores] = useState(setorList || [])
+
+    const [showDepartamento, setShowDepartamento] = useState(false)
+    const [showSetor, setShowSetor] = useState(false)
+
+
     async function handleNewUser() {
 
         const apiClient = setupAPIClient();
+        const perfil_id = perfis[perfilSelect].id;
+        const departamento_id = departamentos[departametoSelect].id;
+        const setor_id = setores[setorSelect].id;
         const avatar = value
         const id = user.id
 
@@ -38,7 +66,10 @@ export function ModalUserEdit({ isOpen, onRequestClose, user }: ModalConfirmProp
                 email,
                 avatar,
                 ativo,
-                id
+                id,
+                perfil_id,
+                departamento_id,
+                setor_id,
             })
             location.reload()
         } catch (err) {
@@ -46,6 +77,39 @@ export function ModalUserEdit({ isOpen, onRequestClose, user }: ModalConfirmProp
             console.log(err.response)
         }
 
+    }
+
+    function handleSenha(){
+        setModalSenhaOpen(true)
+    }
+
+    function closeModalSenha(){
+        setModalSenhaOpen(false)
+    }
+
+    function handleChangeSetor(data) {
+        setSetorSelect(data.value)
+    }
+    function handleChangeDepartamento(data) {
+        setDepartamentoSelect(data.value)
+    }
+    function handleChangePerfil(data) {
+        setPerfilSelect(data.value);
+
+        if (perfis[data.value].nome === "admin") {
+            setShowDepartamento(false)
+            setShowSetor(false)
+        }
+
+        if (perfis[data.value].nome === "usuario prefeitura") {
+            setShowDepartamento(false)
+            setShowSetor(true)
+        }
+
+        if (perfis[data.value].nome === "usuario cartorio") {
+            setShowDepartamento(true)
+            setShowSetor(false)
+        }
     }
 
     async function handleDelete(id: string) {
@@ -90,9 +154,9 @@ export function ModalUserEdit({ isOpen, onRequestClose, user }: ModalConfirmProp
         <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
 
             <div className={styles.container}>
-                <h2>Novo Usuario</h2>
+                <h2>Editar Usuario</h2>
                 <div >
-                    <Form onSubmit={handleNewUser} className={styles.content}>
+                    <Form  className={styles.content}>
                         <div className={styles.topSide}>
                             <div className={styles.inputs}>
                                 <Input type="text" placeholder="nome" value={nome} onChange={(e) => setNome(e.target.value)} icon="user" />
@@ -100,6 +164,38 @@ export function ModalUserEdit({ isOpen, onRequestClose, user }: ModalConfirmProp
                             </div>
 
                         </div>
+                        
+                        <div className={styles.inputs}>
+                                <Dropdown selection name="tipo" id="tipo" value={perfilSelect} onChange={(e, data) => handleChangePerfil(data)} options={
+                                    perfis.map((item, index) => {
+                                        return (
+                                            { key: item.id, value: index, text: item.nome }
+                                        )
+                                    })
+                                }>
+                                </Dropdown>
+                                {showSetor && (
+                                    <Dropdown selection name="setor" id="set" value={setorSelect} onChange={(e, data) => handleChangeSetor(data)} options={
+                                        setores.map((item, index) => {
+                                            return (
+                                                { key: item.id, value: index, text: item.nome }
+                                            )
+                                        })
+                                    }>
+
+                                    </Dropdown>)}
+                                {showDepartamento && (
+                                    <Dropdown selection name="departamento" id="dep" value={departametoSelect} onChange={(e, data) => handleChangeDepartamento(data)}
+                                        options={
+                                            departamentos.map((item, index) => {
+                                                return (
+                                                    { key: item.id, value: index, text: item.nome }
+                                                )
+                                            })
+                                        }>
+                                    </Dropdown >
+                                )}
+                            </div>
                         <div className={styles.avatar} >
                             <div>
                                 <Image src="/avatar1.png" size="tiny" />
@@ -176,17 +272,24 @@ export function ModalUserEdit({ isOpen, onRequestClose, user }: ModalConfirmProp
                             <Form.Radio label="ativo" toggle checked={ativo} onChange={() => handleChangeAtivo()} />
                         </div>
                         <div className={styles.adicionar}>
-                            <Button color="blue" type="submit" >
+                            <Button color="blue" type="submit" onClick={() => handleNewUser()}>
                                 Atualizar
                             </Button>
                             <Button color="red" onClick={() => handleDelete(user.id)}>
                                 Excluir
                             </Button>
+                            <Button color="grey" onClick={() => handleSenha()}>
+                                Trocar Senha
+                            </Button>
                         </div>
+                      
                     </Form>
+            
                 </div>
             </div>
-
+            {modalSenhaOpen && (
+                <ModalSenha isOpen={modalSenhaOpen} onRequestClose={closeModalSenha} id={user.id} />
+            )}                            
         </Modal>
     )
 }

@@ -14,35 +14,21 @@ interface ModalAprovacaoProps {
     isOpen: boolean;
     onRequestClose: () => void;
     setorList: ItemCadastroProps[];
-    descricaoList: DescricaoAprovacao[];
     processoId: number;
     atrasado: boolean
 }
 
 
 
-export function ModalArovacao({ isOpen, onRequestClose, setorList, descricaoList, processoId, atrasado }: ModalAprovacaoProps,) {
+export function ModalArovacaoPessoa({ isOpen, onRequestClose, setorList, processoId, atrasado }: ModalAprovacaoProps,) {
 
     const [setores, setSetoress] = useState(setorList || []);
     const [selectSetor, setSelectSetor] = useState(0)
     const [observacao, setObservacao] = useState("")
-    const [descricao, setDescricao] = useState(descricaoList || [])
     const [alvaraExiste, setAlvaraExiste] = useState(false)
     const [alvara, setAlvara] = useState("")
    
 
-    function handleChangeMatricula(e, index) {
-        descricao[index].matricula = e.target.value
-        setDescricao([...descricao])
-    }
-    function handleChangeData(e, index) {
-        descricao[index].data_registro = e.target.value
-        setDescricao([...descricao])
-    }
-    function handleChangeTranscricao(e, index) {
-        descricao[index].transcricao = e.target.value
-        setDescricao([...descricao])
-    }
 
     function handleChangeSetor(data) {
         setSelectSetor(data.value)
@@ -69,16 +55,10 @@ export function ModalArovacao({ isOpen, onRequestClose, setorList, descricaoList
         const processo_id = processoId
 
     
-
-        if(descricao[0].data_registro === "" || descricao[0].transcricao === "" || descricao[0].matricula === ""){
-            
-            toast.error("campos não preenchidos")
-            return
-        }
-
+        
         try {
-            await apiClient.post("/aprovacao", {
-                observacao, descricao, processo_id,alvara,atraso,setor_id
+            await apiClient.post("/aprovacaopessoa", {
+                observacao, processo_id,alvara,atraso,setor_id
             })
             location.reload()
         } catch {
@@ -109,31 +89,6 @@ export function ModalArovacao({ isOpen, onRequestClose, setorList, descricaoList
             </button>
             <div className={styles.container}>
                 <h2>Novo Registro</h2>
-                <div className={styles.tabelaContainer}>
-                    <Table className={styles.tabela}>
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell>Lote</Table.HeaderCell>
-                                <Table.HeaderCell>Matrícula Nova</Table.HeaderCell>
-                                <Table.HeaderCell>Data Registro</Table.HeaderCell>
-                                <Table.HeaderCell>Trasnc Anterior</Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
-                        <Table.Body>
-                            {descricao.map((item, index) => {
-                                return (
-                                    <Table.Row key={index}>
-                                        <Table.Cell><span>{item.lote}</span></Table.Cell>
-                                        <Table.Cell><Input transparent type="text" placeholder='ex: "0000000"' value={item.matricula || ""} onChange={(e) => handleChangeMatricula(e, index)} /></Table.Cell>
-                                        <Table.Cell><Input transparent type="text" placeholder='ex: "00/00/0000"' value={item.data_registro || ""} onChange={(e) => handleChangeData(e, index)} /></Table.Cell>
-                                        <Table.Cell><Input transparent type="text" placeholder='ex: "00000"' value={item.transcricao || ""} onChange={(e) => handleChangeTranscricao(e, index)} /></Table.Cell>
-                                    </Table.Row>
-                                )
-                            })}
-
-                        </Table.Body>
-                    </Table>
-                </div>
                 <div className={styles.observacao}>
                     <label htmlFor="observacao">Observação:</label>
                     <TextArea name="obs" id="observacao" value={observacao} maxLength={435} onChange={(e,data) => handleChangeObservacao(data)}></TextArea>

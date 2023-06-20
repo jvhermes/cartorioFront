@@ -129,7 +129,7 @@ export default function DashboardPrefeitura({ processList, admin, setorList,avat
 
             </Head>
             
-            <main >
+            <main className={styles.main} >
                 <SidebarCartorio admin={admin}  avatar={avatar} />
                 <div className={styles.container} >
                     <div className={styles.title}>
@@ -252,7 +252,7 @@ export default function DashboardPrefeitura({ processList, admin, setorList,avat
                                                 <span>{item.lote[0].lote.lote}</span>
                                                 <span>{moment(item.criado_em).format("DD/MM/YYYY")}</span>
                                                 <span>{moment(item.prazo).format("DD/MM/YYYY")}</span>
-                                                <span>{ moment(item.prazo).diff(dataAtual, 'days') > 0 && (<span className={styles.respondido}>Pendente</span>) || <span className={styles.pendente}>Atrasado</span>} </span>
+                                                <span>{ item.respondido &&(<span className={styles.respondido}>Respondido</span>) ||( moment(item.prazo).diff(dataAtual, 'days') > 0 && (<span className={styles.pendente}>Pendente</span>) || (<span className={styles.atrasado}>Atrasado</span>))} </span>
                                             </button>
                                         </li>
                                     )
@@ -297,20 +297,35 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
         }
     }
 
-    const responseProcess = await apiClient.get('/processo/lista/departamento', {
-        params: {
-            dep: departamento
+    if(admin){
+        const responseProcess = await apiClient.get('/processo/admin/lista')
+    
+        const responseSetor = await apiClient.get('/setor/lista')
+    
+        return {
+            props: {
+                processList: responseProcess.data,
+                setorList: responseSetor.data,
+                admin: admin,
+                avatar:avatar
+            }
         }
-    })
-
-    const responseSetor = await apiClient.get('/setor/lista')
-
-    return {
-        props: {
-            processList: responseProcess.data,
-            setorList: responseSetor.data,
-            admin: admin,
-            avatar:avatar
+    }else{
+        const responseProcess = await apiClient.get('/processo/lista/departamento', {
+            params: {
+                dep: departamento
+            }
+        })
+    
+        const responseSetor = await apiClient.get('/setor/lista')
+    
+        return {
+            props: {
+                processList: responseProcess.data,
+                setorList: responseSetor.data,
+                admin: admin,
+                avatar:avatar
+            }
         }
     }
 

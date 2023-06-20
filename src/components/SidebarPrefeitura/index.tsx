@@ -13,7 +13,7 @@ interface SideBarRequest {
 export function SidebarPrefeitura({ admin, avatar }: SideBarRequest) {
 
     const { signOut } = useContext(AuthContext)
-    const [visible, setVisible] = useState<boolean>(false)
+    const [visible, setVisible] = useState<boolean>(true)
 
     function toggleSidebar() {
         setVisible((prev) => !prev)
@@ -69,14 +69,6 @@ export function SidebarPrefeitura({ admin, avatar }: SideBarRequest) {
                         </Menu.Item>
                     </Link>
 
-                    {admin && (
-                        <Link href="/prefeitura/cadastrar" >
-                            <Menu.Item link className={styles.menuItem}>
-                                <Icon name='configure' />
-                                Configurações
-                            </Menu.Item>
-                        </Link>)}
-
 
                     {admin && (
                         <Link href="/prefeitura/usuarios">
@@ -95,6 +87,20 @@ export function SidebarPrefeitura({ admin, avatar }: SideBarRequest) {
                         </Link>
                     )}
                 </Menu.Item>
+                {admin && (
+                    <Menu.Item>
+                        <Menu.Item header>
+                            <Icon name='configure' />
+                            Configurações
+                        </Menu.Item>
+                        <Link href="/prefeitura/cadastrar/atividades"><Menu.Item link >Atividades</Menu.Item></Link>
+                        <Link href="/prefeitura/cadastrar/setores"> <Menu.Item link>Setores</Menu.Item></Link>
+                        <Link href="/prefeitura/cadastrar/cartorios"> <Menu.Item link>Cartórios</Menu.Item></Link>
+                        <Link href="/prefeitura/cadastrar/tipos"> <Menu.Item link>Tipos de Processo</Menu.Item></Link>
+                        <Link href="/prefeitura/cadastrar/base"> <Menu.Item link>Base de Dados</Menu.Item></Link>
+                    </Menu.Item>
+
+                )}
             </Sidebar>
 
 

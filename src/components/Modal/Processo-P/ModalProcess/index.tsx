@@ -1,12 +1,12 @@
 import styles from "./styles.module.scss"
 import Modal from 'react-modal'
-import { setupAPIClient } from "../../../../services/api"
+import { ModalConclusao } from "../ModalConclusao"
 import { useState } from 'react'
 import { FiX } from "react-icons/fi"
 import moment from "moment"
 import { ItemCadastroProps, ItemProcessProps } from "../../../../pages/prefeitura"
 import { ModalReenvio } from "../ModalReenvio"
-import { ModalConfirm } from "../../ModalConfirmProcess"
+import { ModalConfirm } from "../../Processo-Cartorio/ModalConfirmProcess"
 import { Button, Table, Icon } from "semantic-ui-react"
 
 import processoPdf from "../../../../pdf/processo"
@@ -22,19 +22,17 @@ export function ModalProcess({ isOpen, onRequestClose, processo, setorList }: Mo
 
     const [modalReenvioOpen, setModalReenvioOpen] = useState(false)
     const [modalConfirmOpen, setModalConfirmOpen] = useState(false)
+    const [modalCloseOpen, setModalCloseOpen] = useState(false)
 
+  
     function closeModal() {
         setModalReenvioOpen(false)
         setModalConfirmOpen(false)
+        setModalCloseOpen(false)
     }
-    async function handleClose(id: number) {
+    async function handleClose() {
 
-        const apiCliente = setupAPIClient();
-
-        await apiCliente.put("/processo/fechar", {
-            id: id
-        })
-        location.reload()
+        setModalCloseOpen(true)
     }
 
     function setPressoPdf() {
@@ -81,7 +79,8 @@ export function ModalProcess({ isOpen, onRequestClose, processo, setorList }: Mo
                         <p>Criado em: <strong>{moment(processo.criado_em).format("DD/MM/YYYY")}</strong></p>
                         <p>Expira em: <strong>{moment(processo.prazo).format("DD/MM/YYYY")}</strong></p>
                         <p>Ano: <strong>{processo.ano}</strong></p>
-                        <p>Tipo: <strong>{processo.tipo.nome}</strong></p>
+                        <p>Enviado Para: <strong>{processo.departamento.nome}</strong></p>
+
                         {processo.respondido && (
                             <p className={styles.respondido}> Respondido em: <strong>  {processo.respondido_em}</strong> </p>
                         )}
@@ -97,30 +96,67 @@ export function ModalProcess({ isOpen, onRequestClose, processo, setorList }: Mo
                     </div>
                 </div>
                 <div className={styles.descricao}>
-                    <h3>Descrição enviada:</h3>
-                    <div className={styles.tableContainer}>
-                        <Table celled className={styles.table} >
-                            <Table.Header >
-                                <Table.Row>
-                                    <Table.HeaderCell>Lote</Table.HeaderCell>
-                                    <Table.HeaderCell>Area</Table.HeaderCell>
-                                    <Table.HeaderCell>Testada</Table.HeaderCell>
-                                </Table.Row>
-                            </Table.Header>
-                            <Table.Body>
-                                {processo.descricao.map((item) => {
-                                    return (
-                                        <Table.Row key={item.id}>
-                                            <Table.Cell><span>{item.lote}</span></Table.Cell>
-                                            <Table.Cell><span>{item.area}</span></Table.Cell>
-                                            <Table.Cell><span>{item.testada}</span></Table.Cell>
+                    {processo.tipoLote && (
+                        <div>
+                            <h3>Descrição enviada:</h3>
+                            <div className={styles.tableContainer}>
+                                <Table celled className={styles.table} >
+                                    <Table.Header >
+                                        <Table.Row>
+                                            <Table.HeaderCell>Lote</Table.HeaderCell>
+                                            <Table.HeaderCell>Area</Table.HeaderCell>
+                                            <Table.HeaderCell>Testada</Table.HeaderCell>
                                         </Table.Row>
-                                    )
-                                })}
+                                    </Table.Header>
+                                    <Table.Body>
+                                        {processo.descricaoLotes.map((item) => {
+                                            return (
+                                                <Table.Row key={item.id}>
+                                                    <Table.Cell><span>{item.lote}</span></Table.Cell>
+                                                    <Table.Cell><span>{item.area}</span></Table.Cell>
+                                                    <Table.Cell><span>{item.testada}</span></Table.Cell>
+                                                </Table.Row>
+                                            )
+                                        })}
 
-                            </Table.Body>
-                        </Table>
-                    </div>
+                                    </Table.Body>
+                                </Table>
+                            </div>
+                        </div>
+                        
+                    )}
+                    {!processo.tipoLote && (
+                        <div>
+                            <h3>Descrição enviada:</h3>
+                            <div className={styles.tableContainer}>
+                                <Table celled className={styles.table} >
+                                    <Table.Header >
+                                        <Table.Row>
+                                            <Table.HeaderCell>Cpf</Table.HeaderCell>
+                                            <Table.HeaderCell>Nome</Table.HeaderCell>
+                                            <Table.HeaderCell>Email</Table.HeaderCell>
+                                            <Table.HeaderCell>Telefone</Table.HeaderCell>
+                                        </Table.Row>
+                                    </Table.Header>
+                                    <Table.Body>
+                                        {processo.descricaoPessoas.map((item) => {
+                                            return (
+                                                <Table.Row key={item.id}>
+                                                    <Table.Cell><span>{item.cpf}</span></Table.Cell>
+                                                    <Table.Cell><span>{item.nome}</span></Table.Cell>
+                                                    <Table.Cell><span>{item.email}</span></Table.Cell>
+                                                    <Table.Cell><span>{item.telefone}</span></Table.Cell>
+                                                </Table.Row>
+                                            )
+                                        })}
+
+                                    </Table.Body>
+                                </Table>
+                            </div>
+                        </div>
+                        
+                    )}
+
                     <h3>Lotes relacionados</h3>
                     {processo.lote.map((item, index) => {
                         return (
@@ -137,6 +173,8 @@ export function ModalProcess({ isOpen, onRequestClose, processo, setorList }: Mo
                             </div>
                         )
                     })}
+                     <h3>Observação de envio</h3>
+                            <p className={styles.observacao}>{processo.texto}</p>
                 </div>
 
                 {processo.aprovacao && (
@@ -189,18 +227,50 @@ export function ModalProcess({ isOpen, onRequestClose, processo, setorList }: Mo
                                 </div>
                             )
                         })}
+                    
                     </div>
                 )}
-                {!processo.aprovacao && !processo.ativo && (
+                {processo.aprovacaoPessoa && (
+                    <div className={styles.descricao}>
+                        <div className={styles.descricaoResposta}>
+                            <h2>Resposta:</h2>
+                            <h3>Observações do cartório:</h3>
+                            <p className={styles.observacao}>{processo.aprovacaoPessoa.observacao}</p>
+                        </div>
+
+                        {processo.aprovacaoPessoa.reenvio.map((item, index) => {
+                            return (
+                                <div key={index} >
+                                    <h3>Reenvio {index + 1} </h3>
+                                    <div>
+                                        <span>De:<strong> {item.enviado_de}</strong> </span>
+                                        <br></br>
+                                        <span>Para:<strong> {item.nome}</strong> </span>
+                                    </div>
+                                    <p className={styles.reenvio}>{item.observacao}</p>
+                                </div>
+                            )
+                        })}
+                    
+                    </div>
+                )}
+                    {!processo.ativo && processo.respondido &&(
+                            <div className={styles.finais}>
+                                <h3>Observações finais:</h3>
+                                <p className={styles.observacao}>{processo.conclusao}</p>
+                            </div>
+                        )}
+                {(!processo.respondido && !processo.ativo) && (
                     <div>
                         <p>
                             Processo Excluído antes de ser respondido
                         </p>
                     </div>
                 )}
+       
                 {processo.ativo && processo.respondido && (
                     <div className={styles.button}>
-                        <Button color="blue" onClick={() => handleClose(processo.id)}>Concluir</Button>
+                        <Button color="blue" onClick={() => handleClose()}>Concluir</Button>
                         <Button color="grey" onClick={() => setModalReenvioOpen(true)}>Repassar Internamente</Button>
                         <Button color="red" onClick={setPressoPdf} >
                             Gerar PDF
@@ -208,12 +278,12 @@ export function ModalProcess({ isOpen, onRequestClose, processo, setorList }: Mo
                         </Button>
                     </div>
                 )}
-                {!processo.aprovacao && processo.ativo && (
+                {!processo.respondido && processo.ativo && (
                     <div className={styles.button}>
                         <Button color="red" onClick={() => openModalConfirm()} >Cancelar Envio</Button>
                     </div>
                 )}
-                {!processo.ativo && (
+                {!processo.ativo && processo.respondido && (
                     <div className={styles.button}>
                         <Button color="red" onClick={setPressoPdf} >
                             Gerar PDF
@@ -225,13 +295,15 @@ export function ModalProcess({ isOpen, onRequestClose, processo, setorList }: Mo
 
             </div>
             {modalReenvioOpen && (
-                <ModalReenvio isOpen={modalReenvioOpen} onRequestClose={closeModal} idAprovacao={processo.aprovacao.id} setorList={setorList} />
+                <ModalReenvio isOpen={modalReenvioOpen} onRequestClose={closeModal} idAprovacao={processo.aprovacao.id} setorList={setorList} processo_id={processo.id} />
 
             )}
             {modalConfirmOpen &&
-                (<ModalConfirm isOpen={modalConfirmOpen} onRequestClose={closeModal} id={processo.id.toString()} type={1} />
+                (<ModalConfirm isOpen={modalConfirmOpen} onRequestClose={closeModal} idRecebido={processo.id.toString()} type={1} />
                 )}
-
+            {modalCloseOpen && (
+                <ModalConclusao isOpen={modalCloseOpen} onRequestClose={closeModal} processoId={processo.id}/>
+            )}
         </Modal>
     )
 }

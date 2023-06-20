@@ -139,7 +139,7 @@ export default function HistoricoCartorio({ processList, admin, avatar }: Dashbo
 
             </Head>
 
-            <main>
+            <main className={styles.main}>
                 <SidebarCartorio avatar={avatar} admin={admin} />
                 <div className={styles.container} >
                     <div className={styles.title}>
@@ -294,18 +294,33 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
         }
     }
 
-    const responseProcess = await apiClient.get('/processocartorio/geral', {
-        params: {
-            dep:departamento
-        }
-    })
+    if(admin){
 
-    return {
-        props: {
-            processList: responseProcess.data,
-            admin: admin,
-            avatar: avatar
+        const responseProcess = await apiClient.get('/processocartorio/admin/geral')
+    
+        return {
+            props: {
+                processList: responseProcess.data,
+                admin: admin,
+                avatar: avatar
+            }
+        }
+    }else{
+        const responseProcess = await apiClient.get('/processocartorio/geral', {
+            params: {
+                dep:departamento
+            }
+        })
+    
+        return {
+            props: {
+                processList: responseProcess.data,
+                admin: admin,
+                avatar: avatar
+            }
         }
     }
+
+  
 
 })

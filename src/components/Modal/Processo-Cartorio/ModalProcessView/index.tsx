@@ -1,8 +1,8 @@
 import styles from "./styles.module.scss"
 import Modal from 'react-modal'
-import { setupAPIClient } from "../../../../services/api"
 import { useState } from "react"
 import { ModalArovacao } from "../ModalAprovacao"
+import { ModalArovacaoPessoa } from "../ModalAprovacaoPessoa"
 import { DescricaoAprovacao } from "../../../../pages/prefeitura"
 import { Button, Table } from "semantic-ui-react"
 import { FiX } from "react-icons/fi"
@@ -21,11 +21,12 @@ interface ModalProcessProps {
 export function ModalProcess({ isOpen, onRequestClose, processo, setorList }: ModalProcessProps) {
 
     const [modalAprovacaoOpen, setModalAprovacaoOpen] = useState(false)
+    const [modalAprovacaoPessoaOpen, setModalAprovacaoPessoaOpen] = useState(false)
     const processoId = processo.id
-    const [atrasado,setAtrasado] = useState<boolean>()
+    const [atrasado, setAtrasado] = useState<boolean>()
     const descricaoList: DescricaoAprovacao[] = []
 
-    processo.descricao.map((item) => {
+    processo.descricaoLotes.map((item) => {
         descricaoList.push({
             lote: item.lote,
             matricula: "",
@@ -40,14 +41,20 @@ export function ModalProcess({ isOpen, onRequestClose, processo, setorList }: Mo
 
     const dataCalc = data.diff(dataAtual, 'days')
 
-    function openAprovacaoModal(atraso:boolean) {
+    function openAprovacaoModal(atraso: boolean) {
 
         setAtrasado(atraso)
         setModalAprovacaoOpen(true)
     }
+    function openAprovacaoModalPessoa(atraso: boolean) {
+
+        setAtrasado(atraso)
+        setModalAprovacaoPessoaOpen(true)
+    }
 
     function closeAprovacaoModal() {
         setModalAprovacaoOpen(false);
+        setModalAprovacaoPessoaOpen(false)
     }
     const customStyles = {
         content: {
@@ -74,7 +81,10 @@ export function ModalProcess({ isOpen, onRequestClose, processo, setorList }: Mo
                         <p>Número do Processo: <strong>{processo.num_processo} </strong></p>
                         <p>Criado em: <strong>{processo.criado_em}</strong></p>
                         <p>Expira em: <strong>{processo.prazo}</strong></p>
-                        {dataCalc > 0 &&  (
+                        <p>Ano: <strong>{processo.ano}</strong></p>
+                        <p>Recebido de: <strong>{processo.setor.nome}</strong></p>
+
+                        {dataCalc > 0 && (
                             <p className={`${styles.prazo} ${styles.prazoAntes}`}> {dataCalc} dias restantes</p>
                         )}
                         {dataCalc < 0 && (
@@ -83,40 +93,80 @@ export function ModalProcess({ isOpen, onRequestClose, processo, setorList }: Mo
                         {dataCalc === 0 && (
                             <p className={`${styles.prazoUltimo} ${styles.prazo}`}> Último dia de prazo</p>
                         )}
-                    </div>
-                </div>
-                <div className={styles.descricao}>
-                    <h3>Nova(s) descrições do imóvel:</h3>
-                    <div className={styles.tabelaContainer}>
-                        <Table celled className={styles.tabela} >
-                            <Table.Header>
-                                <Table.Row>
-                                    <Table.HeaderCell>Lote</Table.HeaderCell>
-                                    <Table.HeaderCell>Area</Table.HeaderCell>
-                                    <Table.HeaderCell>Testada</Table.HeaderCell>
-                                </Table.Row>
-                            </Table.Header>
-                            <Table.Body>
-                                {processo.descricao.map((item) => {
-                                    return (
-                                        <Table.Row key={item.id}>
-                                            <Table.Cell><span>{item.lote}</span></Table.Cell>
-                                            <Table.Cell><span>{item.area}</span></Table.Cell>
-                                            <Table.Cell><span>{item.testada}</span></Table.Cell>
-                                        </Table.Row>
-                                    )
-                                })}
 
-                            </Table.Body>
-                        </Table>
                     </div>
                 </div>
+
+
+
+                {processo.tipoLote && (
+                    <div className={styles.descricao}>
+                        <h3>Descrição Recebida:</h3>
+                        <div className={styles.tableContainer}>
+                            <Table celled className={styles.table} >
+                                <Table.Header >
+                                    <Table.Row>
+                                        <Table.HeaderCell>Lote</Table.HeaderCell>
+                                        <Table.HeaderCell>Area</Table.HeaderCell>
+                                        <Table.HeaderCell>Testada</Table.HeaderCell>
+                                    </Table.Row>
+                                </Table.Header>
+                                <Table.Body>
+                                    {processo.descricaoLotes.map((item) => {
+                                        return (
+                                            <Table.Row key={item.id}>
+                                                <Table.Cell><span>{item.lote}</span></Table.Cell>
+                                                <Table.Cell><span>{item.area}</span></Table.Cell>
+                                                <Table.Cell><span>{item.testada}</span></Table.Cell>
+                                            </Table.Row>
+                                        )
+                                    })}
+
+                                </Table.Body>
+                            </Table>
+                        </div>
+                    </div>
+
+                ) || (
+                        <div className={styles.descricao}>
+                            <h3>Descrição Recebida:</h3>
+                            <div className={styles.tableContainer}>
+                                <Table celled className={styles.table} >
+                                    <Table.Header >
+                                        <Table.Row>
+                                            <Table.HeaderCell>Cpf</Table.HeaderCell>
+                                            <Table.HeaderCell>Nome</Table.HeaderCell>
+                                            <Table.HeaderCell>Email</Table.HeaderCell>
+                                            <Table.HeaderCell>Telefone</Table.HeaderCell>
+                                        </Table.Row>
+                                    </Table.Header>
+                                    <Table.Body>
+                                        {processo.descricaoPessoas.map((item) => {
+                                            return (
+                                                <Table.Row key={item.id}>
+                                                    <Table.Cell><span>{item.cpf}</span></Table.Cell>
+                                                    <Table.Cell><span>{item.nome}</span></Table.Cell>
+                                                    <Table.Cell><span>{item.email}</span></Table.Cell>
+                                                    <Table.Cell><span>{item.telefone}</span></Table.Cell>
+                                                </Table.Row>
+                                            )
+                                        })}
+
+                                    </Table.Body>
+                                </Table>
+                            </div>
+                        </div>
+                    )}
+
+
+
 
                 <div className={styles.lotesContent}>
+                    <h3>Lotes Relacionados:</h3>
                     {processo.lote.map((item, index) => {
                         return (
                             <div className={styles.lotes} key={index}>
-                                <h2>Dados do lote {index + 1}</h2>
+                                <h3>Dados do lote {index + 1}</h3>
                                 <p>Bairro: <strong> {item.lote.bairro} </strong> </p>
                                 <p>Quadra: <strong> {item.lote.quadra}</strong></p>
                                 <p>Lote: <strong> {item.lote.lote} </strong> </p>
@@ -129,19 +179,36 @@ export function ModalProcess({ isOpen, onRequestClose, processo, setorList }: Mo
                     })}
 
                 </div>
-
-
-                <div className={styles.button} >
-                    {dataCalc < 0 && (
-                            <Button color="red" onClick={ () => openAprovacaoModal(true)} >Aprovar com atraso</Button>
-                        ) || <Button color="blue" onClick={ () =>openAprovacaoModal(false)} >Aprovar</Button>}
-                    
+                <div className={styles.observacaoContainer}>
+                    <h3>Observação Recebida</h3>
+                    <p className={styles.observacao}>{processo.texto}</p>
                 </div>
+                
+                {!processo.respondido && (processo.tipoLote && (
+                    <div className={styles.button} >
+                        {dataCalc < 0 && (
+                            <Button color="red" onClick={() => openAprovacaoModal(true)} >Informar Registro com atraso</Button>
+                        ) || <Button color="blue" onClick={() => openAprovacaoModal(false)} >Informar Registro</Button>}
+
+                    </div>
+                ) || (
+                        <div className={styles.button} >
+                            {dataCalc < 0 && (
+                                <Button color="red" onClick={() => openAprovacaoModalPessoa(true)} >Informar Registro com atraso</Button>
+                            ) || <Button color="blue" onClick={() => openAprovacaoModalPessoa(false)}  >Informar Registro</Button>}
+
+                        </div>
+                    ))}
+
 
             </div>
             {modalAprovacaoOpen && (
-                <ModalArovacao isOpen={modalAprovacaoOpen} descricaoList={descricaoList} onRequestClose={closeAprovacaoModal} 
-                setorList={setorList} processoId={processoId} atrasado={atrasado} />
+                <ModalArovacao isOpen={modalAprovacaoOpen} descricaoList={descricaoList} onRequestClose={closeAprovacaoModal}
+                    setorList={setorList} processoId={processoId} atrasado={atrasado} />
+            )}
+             {modalAprovacaoPessoaOpen && (
+                <ModalArovacaoPessoa isOpen={modalAprovacaoPessoaOpen} onRequestClose={closeAprovacaoModal}
+                    setorList={setorList} processoId={processoId} atrasado={atrasado} />
             )}
         </Modal>
     )

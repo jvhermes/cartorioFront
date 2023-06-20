@@ -15,9 +15,10 @@ interface ModalProcessProps {
     onRequestClose: () => void;
     idAprovacao: string;
     setorList: ItemCadastroProps[];
+    processo_id:number;
 }
 
-export function ModalReenvio({ isOpen, onRequestClose, idAprovacao, setorList }: ModalProcessProps) {
+export function ModalReenvio({ isOpen, onRequestClose, idAprovacao, setorList,processo_id }: ModalProcessProps) {
 
     const [observacao, setObservacao] = useState("")
 
@@ -37,7 +38,7 @@ export function ModalReenvio({ isOpen, onRequestClose, idAprovacao, setorList }:
         const nome = setores[setorSelect].nome
         try {
             await apiClient.post("reenvio", {
-                aprovacao_id, enviado_de, nome, setor_id, observacao
+                aprovacao_id, enviado_de, nome, setor_id, observacao,processo_id
             })
             location.reload()
         } catch {

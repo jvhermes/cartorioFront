@@ -11,12 +11,86 @@ interface ModalConfirmProps{
     id:string;
     index:number;
     type:number;
+    nomeAtual:string;
 }
 
-export function ModalUpdate({isOpen,onRequestClose, id,index,type}:ModalConfirmProps){
+export function ModalEditCadastro({isOpen,onRequestClose, id,index,type,nomeAtual}:ModalConfirmProps){
 
-    const [nome,setNome] = useState("")
+    const [nome,setNome] = useState(nomeAtual)
 
+    async function handleDelete(){
+        const apiCliente = setupAPIClient();
+        if(type===1){
+            try{
+                await apiCliente.delete("/atividade",{
+                    params:{
+                        id:id
+                    }
+                })
+                setNome("")
+                location.reload()
+            }catch(err){
+                console.log(err)
+                setNome("")
+                toast.error("Erro na atualização")
+            }
+            
+            
+        }
+        if(type===2){
+            try{
+                await apiCliente.delete("/departamento",{
+                    params:{
+                        id:id
+                    }
+                })
+                setNome("")
+                location.reload()
+            }catch{
+                setNome("")
+                toast.error("Erro na atualização")
+            }
+
+        }
+        if(type===3){
+
+            if(index === 0 || index === 1){
+
+                toast.error("Este campo não pode ser atualizado")
+
+                return
+            }
+            try{
+                await apiCliente.delete("/tipo",{
+                    params:{
+                        id:id
+                    }
+                })
+                setNome("")
+                location.reload()
+            }catch{
+                toast.error("Erro na atualização")
+                setNome("")
+            }
+
+        }
+
+        if(type===4){
+            try{
+                await apiCliente.delete("/setor",{
+                    params:{
+                        id:id
+                    }
+                })
+                setNome("")
+                location.reload()
+            }catch{
+                setNome("")
+                toast.error("Erro na atualização")
+            }
+
+        }
+    }
     async function handleUpdate(){
         const apiCliente = setupAPIClient();
 
@@ -28,7 +102,8 @@ export function ModalUpdate({isOpen,onRequestClose, id,index,type}:ModalConfirmP
                 })
                 setNome("")
                 location.reload()
-            }catch{
+            }catch(err){
+                console.log(err)
                 setNome("")
                 toast.error("Erro na atualização")
             }
@@ -71,21 +146,8 @@ export function ModalUpdate({isOpen,onRequestClose, id,index,type}:ModalConfirmP
             }
 
         }
-        if(type===4){
-            try{
-                await apiCliente.put("/tipocartorio/update",{
-                    id,
-                    nome
-                })
-                setNome("")
-                location.reload()
-            }catch{
-                setNome("")
-                toast.error("Erro na atualização")
-            }
 
-        }
-        if(type===5){
+        if(type===4){
             try{
                 await apiCliente.put("/setor/update",{
                     id,
@@ -118,17 +180,17 @@ export function ModalUpdate({isOpen,onRequestClose, id,index,type}:ModalConfirmP
         <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
 
             <div className={styles.container}>
-                <h2>Atualizar nome</h2>
+                <h2>Editar</h2>
                 <div>
-                    <Input type="text" placeholder="Novo nome" value={nome}onChange= {(e) => setNome(e.target.value)} />
+                    <Input type="text" placeholder="Novo nome" value={nome}onChange= {(e,data) => setNome(data.value)} />
                 </div>
                 <div className={styles.content}>
                     
-                    <Button  onClick={handleUpdate} color="blue">
+                    <Button  onClick={() => handleUpdate()} color="blue">
                         Atualizar
                     </Button>
-                    <Button onClick={onRequestClose} className="react-modal-close" >
-                        Cancelar
+                    <Button color="red" onClick={() => handleDelete()} className="react-modal-close" >
+                        Excluir
                     </Button>
                 </div>
             </div>

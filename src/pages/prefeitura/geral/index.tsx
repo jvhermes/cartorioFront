@@ -143,7 +143,7 @@ export default function HistoricoPrefeitura({ processList, admin, avatar, setorL
 
             </Head>
 
-            <main>
+            <main className={styles.main}>
                 <SidebarPrefeitura avatar={avatar} admin={admin} />
                 <div className={styles.container} >
                     <div className={styles.title}>
@@ -317,17 +317,34 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
         }
     }
 
-    const responseProcess = await apiClient.get('/processo/geral')
-
     const responseSetor = await apiClient.get('/setor/lista')
 
-    return {
-        props: {
-            processList: responseProcess.data,
-            admin: admin,
-            avatar: avatar,
-            setorList: responseSetor.data,
+
+    if(admin){
+        const responseProcess = await apiClient.get('/processo/admin/geral')
+
+        return {
+            props: {
+                processList: responseProcess.data,
+                admin: admin,
+                avatar: avatar,
+                setorList: responseSetor.data,
+            }
+        }
+    }else{
+        const responseProcess = await apiClient.get('/processo/geral')
+
+   
+        return {
+            props: {
+                processList: responseProcess.data,
+                admin: admin,
+                avatar: avatar,
+                setorList: responseSetor.data,
+            }
         }
     }
+
+   
 
 })

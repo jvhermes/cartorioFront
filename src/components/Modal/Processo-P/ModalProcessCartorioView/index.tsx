@@ -22,7 +22,7 @@ export function ModalProcessCartorioView({ isOpen, onRequestClose, processo }: M
         try {
             await apiCliente.put("/processocartorio/fechar", {
                 id: processo.id,
-                exlcuido:false,
+                excluido:false,
             })
             location.reload()
         } catch {
@@ -71,7 +71,7 @@ export function ModalProcessCartorioView({ isOpen, onRequestClose, processo }: M
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
-                            {processo.descricao.map((item) => {
+                            {processo.descricaoPessoas.map((item) => {
                                 return (
                                     <Table.Row key={item.id}>
                                         <Table.Cell><span>{item.nome}</span></Table.Cell>
@@ -100,10 +100,7 @@ export function ModalProcessCartorioView({ isOpen, onRequestClose, processo }: M
                 </div>
                 <div className={styles.text}>
                     <div className={styles.observacao}>
-                        <div>
-                            <h3>Memorando</h3>
-                            <p className={styles.observacaoMemorando}>{processo.memorando}</p>
-                        </div>
+                    
                         <div>
                             <h3>Observações</h3>
                             <p className={styles.observacaoMaior}>{processo.observacao}</p>

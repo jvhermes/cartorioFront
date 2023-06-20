@@ -1,12 +1,18 @@
 import styles from "./styles.module.scss"
-import { ItemCadastroProps, ItemLoteProps } from "../../../../pages/prefeitura"
 import { useState } from "react"
-import { AiOutlinePlus, AiOutlineMinus, AiOutlineLeft, AiOutlineRight } from "react-icons/ai"
 import { setupAPIClient } from "../../../../services/api"
-import { Descricao, Ids } from "./remembramento"
-import { Dropdown, Input, Table, Button, TextArea } from "semantic-ui-react"
-
+import { Input, Dropdown, Button } from "semantic-ui-react"
+import { AiOutlinePlus, AiOutlineMinus, AiOutlineLeft, AiOutlineRight } from "react-icons/ai"
+import { Ids } from "./remembramento"
+import { ItemCadastroProps, ItemLoteProps } from "../../../../pages/prefeitura"
 import { toast } from "react-toastify"
+
+type Descricao = {
+    nome: string;
+    cpf: string;
+    email: string;
+    telefone: string;
+}
 
 interface NewProcessProps {
     atividade: ItemCadastroProps;
@@ -18,25 +24,28 @@ interface NewProcessProps {
     criado_em: string
 }
 
-export function Desmembramento({ atividade, tipo, departamentoList, loteList, numero_processo, ano, criado_em }: NewProcessProps) {
+export function Pessoa({ departamentoList, tipo, atividade, loteList, numero_processo, ano, criado_em }: NewProcessProps,) {
+
+    
+    const [selectDepartamento, setSelectDepartamento] = useState(0)
+    const [observacao, setObservacao] = useState("")
+
+
+    const [numPessoas, setNumPessoas] = useState(0)
+    const [descricaoPessoa, setDescricao] = useState<Descricao[]>([])
 
     const tipo_id = tipo.id;
     const atividade_id = atividade.id;
     const num_processo = numero_processo
 
-    const [lote_id, setLote_id] = useState<Ids[]>([])
-    const [observacao, setObservacao] = useState("")
-
-    const [departamentos, setDepartamentos] = useState(departamentoList || []);
-    const [selectDepartamento, setSelectDepartamento] = useState(0)
-
-    const [numLotes, setNumLotes] = useState(0)
-    const [descricaoLotes, setDescricao] = useState<Descricao[]>([])
 
 
     const [endereco, setEndereco] = useState("")
     const [matricula, setMatricula] = useState("")
     const [area, setArea] = useState("")
+
+    
+    const [lote_id, setLote_id] = useState<Ids[]>([])
 
     const [descricaoCod, setDescricaoCod] = useState(" ")
     const [descricaoProp, setDescricaoProp] = useState(" ")
@@ -47,87 +56,6 @@ export function Desmembramento({ atividade, tipo, departamentoList, loteList, nu
     const [selectLote, setSelectLote] = useState("")
     const [selectCodigo, setSelectCodigo] = useState("")
 
-
-    //bairros unicos
-    const bairros = loteList.map((item) => {
-        return item.bairro
-    })
-
-
-    const filteredBairros = bairros.filter((item, index) => {
-        return bairros.indexOf(item) === index && item
-    }).sort();
-
-    const [selectBairro, setSelectBairro] = useState(filteredBairros[0])
-
-    //quadras por bairro unicas 
-    const quadrasPorBairro = loteList.filter((item) => {
-
-        const searchBairro = selectBairro;
-        const bair = item.bairro;
-
-        return searchBairro && bair.includes(searchBairro);
-    })
-
-    const quadras = quadrasPorBairro.map((item) => {
-        return item.quadra
-    })
-
-
-    const filtredQuadra = quadras.filter((item, index) => {
-
-        return quadras.indexOf(item) === index && item
-    }).sort();
-
-
-    //lote por bairro e quadra 
-
-    const lotePorBairroeQuadra = loteList.filter((item) => {
-
-        const searchBairro = selectBairro;
-        const bair = item.bairro;
-
-        const searchQuadra = selectQuadra;
-        const qua = item.quadra;
-
-        const searchinsc = selectInsc;
-        const inscri = item.insc_imob;
-
-        const searchcod = selectCodigo;
-        const cod = item.codigo_imovel;
-
-        if (searchinsc) {
-            return inscri.includes(searchinsc)
-        }
-
-        if (searchcod) {
-            return cod.includes(searchcod)
-        }
-
-        return searchBairro && bair.includes(searchBairro) && searchQuadra && qua.includes(searchQuadra);
-    });
-
-    function handleMinus() {
-        if (numLotes === 0) {
-            return
-        }
-        descricaoLotes.pop()
-        setNumLotes(numLotes - 1)
-    }
-
-    function handlePlus() {
-        if (numLotes === 10) {
-
-            return
-        }
-
-        descricaoLotes.push({
-            area: "",
-            lote: "",
-            testada: ""
-        })
-        setNumLotes(numLotes + 1)
-    }
 
     async function handleRigth() {
 
@@ -166,6 +94,89 @@ export function Desmembramento({ atividade, tipo, departamentoList, loteList, nu
     }
 
 
+    //bairros unicos
+    const bairros = loteList.map((item) => {
+        return item.bairro
+    })
+
+
+    const filteredBairros = bairros.filter((item, index) => {
+        return bairros.indexOf(item) === index && item
+    }).sort();
+
+    const [selectBairro, setSelectBairro] = useState(filteredBairros[0])
+
+    //quadras por bairro unicas 
+    const quadrasPorBairro = loteList.filter((item) => {
+
+        const searchBairro = selectBairro;
+        const bair = item.bairro;
+
+        return searchBairro && bair.includes(searchBairro);
+    })
+
+    const quadras = quadrasPorBairro.map((item) => {
+        return item.quadra
+    })
+
+    const filtredQuadra = quadras.filter((item, index) => {
+        return quadras.indexOf(item) === index && item
+    }).sort();
+
+    //lote por bairro e quadra 
+
+    const lotePorBairroeQuadra = loteList.filter((item) => {
+
+        const searchBairro = selectBairro;
+        const bair = item.bairro;
+
+        const searchQuadra = selectQuadra;
+        const qua = item.quadra
+
+        const searchinsc = selectInsc
+        const inscri = item.insc_imob
+
+        const searchcod = selectCodigo
+        const cod = item.codigo_imovel
+
+        if (searchinsc) {
+            return inscri.includes(searchinsc)
+        }
+
+        if (searchcod) {
+            return cod.includes(searchcod)
+        }
+
+        return searchBairro && bair.includes(searchBairro) && searchQuadra && qua.includes(searchQuadra);
+    });
+
+
+
+
+    function handleMinus() {
+        if (numPessoas === 0) {
+            return
+        }
+        descricaoPessoa.pop()
+        setNumPessoas(numPessoas - 1)
+    }
+
+    function handlePlus() {
+        if (numPessoas === 5) {
+
+            return
+        }
+        descricaoPessoa.push({
+            nome: "",
+            cpf: "",
+            email: "",
+            telefone: ""
+        })
+        setNumPessoas(numPessoas + 1)
+    }
+
+
+
     function handleChangeDepartamento(data) {
         setSelectDepartamento(data.value)
     }
@@ -178,59 +189,68 @@ export function Desmembramento({ atividade, tipo, departamentoList, loteList, nu
         setSelectQuadra(data.value)
     }
 
+    function handleChangeInsc(data) {
+        setSelectInsc(data.value)
+
+    }
+    function handleChangeCod(data) {
+        setSelectCodigo(data.value)
+
+    }
     function handleChangeLote(data) {
         setSelectLote(data.value)
 
     }
 
-    function handleChangeLoteDesc(e, index) {
-        descricaoLotes[index].lote = e.target.value
-        setDescricao([...descricaoLotes])
+    function handleChangeNomeDesc(e, index) {
+        descricaoPessoa[index].nome = e.target.value
+        setDescricao([...descricaoPessoa])
     }
-    function handleChangeAreaDesc(e, index) {
-        descricaoLotes[index].area = e.target.value
-        setDescricao([...descricaoLotes])
+    function handleChangeCpfDesc(e, index) {
+        descricaoPessoa[index].cpf = e.target.value
+        setDescricao([...descricaoPessoa])
     }
-    function handleChangeTestadaDesc(e, index) {
-        descricaoLotes[index].testada = e.target.value
-        setDescricao([...descricaoLotes])
+    function handleChangeEmailDesc(e, index) {
+        descricaoPessoa[index].email = e.target.value
+        setDescricao([...descricaoPessoa])
+    }
+    function handleChangeTelefoneDesc(e, index) {
+        descricaoPessoa[index].telefone = e.target.value
+        setDescricao([...descricaoPessoa])
     }
 
     async function handleNewProcess() {
 
         const apiClient = setupAPIClient()
-        const departamento_id = departamentos[selectDepartamento].id
+        const departamento_id = departamentoList[selectDepartamento].id
         const prazo = 180
         const response = await apiClient.get("/me")
         const { setor_id } = response.data;
-        const descricaoPessoa = []
-        const tipoLote = true
-        const texto = observacao
 
+        const descricaoLotes = []
+        
+        const tipoLote = false
+        const texto = observacao
         if (num_processo === "" || atividade_id === "" || departamento_id === "" || lote_id[0] === null ||
-            descricaoLotes[0].area === "" || tipo_id === "" || setor_id === "" || ano === "" || criado_em === "") {
+            descricaoPessoa[0].cpf === "" || tipo_id === "" || setor_id === "" || ano === "" || criado_em === "") {
 
             toast.error("Preencha todos os campos")
             return
         }
-
-        console.log(setor_id)
-
+        
         try {
             await apiClient.post("/processo", {
                 num_processo, prazo, atividade_id, departamento_id,
                 lote_id, descricaoLotes,descricaoPessoa, tipo_id, setor_id, ano, criado_em,tipoLote,texto
             })
-
-
             location.reload()
         } catch(err) {
             console.log(err)
             toast.error("Erro ao enviar processo")
         }
 
-
     }
+
 
     return (
         <div className={styles.container}>
@@ -238,7 +258,6 @@ export function Desmembramento({ atividade, tipo, departamentoList, loteList, nu
                 <div className={styles.filter}>
                     <h3>Filtro:</h3>
                     <div className={styles.filterTopSide}>
-
                         <div>
                             <label htmlFor="bairro">Bairro:</label>
                             <Dropdown clearable id="bairro" search selection options={
@@ -259,12 +278,11 @@ export function Desmembramento({ atividade, tipo, departamentoList, loteList, nu
                                     )
                                 })
                             }>
-
                             </Dropdown>
                         </div>
-                        <div>
+                        <div className={styles.inscr}>
                             <label htmlFor="inscricao">Insc. Imobiliaria:</label>
-                            <Input type="search" list="insc" id="inscricao" value={selectInsc} onChange={(e) => setSelectInsc(e.target.value)} />
+                            <Input type="search" list="insc" id="inscricao" value={selectInsc} onChange={(e, data) => handleChangeInsc(data)} />
                             <datalist id="insc" >
                                 {loteList.map((item) => {
                                     return (
@@ -273,9 +291,9 @@ export function Desmembramento({ atividade, tipo, departamentoList, loteList, nu
                                 })}
                             </datalist>
                         </div>
-                        <div>
+                        <div className={styles.codigo}>
                             <label htmlFor="codigo_imovel">Cod. Imóvel:</label>
-                            <Input type="search" list="codigo" id="codigo_imovel" value={selectCodigo} onChange={(e) => setSelectCodigo(e.target.value)} />
+                            <Input type="search" list="codigo" id="codigo_imovel" value={selectCodigo} onChange={(e, data) => handleChangeCod(data)} />
                             <datalist id="codigo" >
                                 {loteList.map((item) => {
                                     return (
@@ -330,52 +348,51 @@ export function Desmembramento({ atividade, tipo, departamentoList, loteList, nu
                         </li>
                     </ul>
                 </div>
-            </section>
-            <section className={styles.contentDescricao}>
-                <h3>Novos Lotes:</h3>
-                <div className={styles.number}>
-                    <span>Número de Lotes: {numLotes}</span>
-                    <button onClick={handlePlus}><AiOutlinePlus size={30} /></button>
-                    <button onClick={handleMinus}><AiOutlineMinus size={30} /></button>
-                </div>
-                <div className={styles.tableContainer}>
-                    <Table textAlign="center" celled size="large">
-                        <Table.Header className={styles.table}>
-                            <Table.Row >
-                                <Table.HeaderCell>Lote</Table.HeaderCell>
-                                <Table.HeaderCell>Area</Table.HeaderCell>
-                                <Table.HeaderCell>Testada</Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
-                        <Table.Body>
-                            {descricaoLotes.map((item, index) => {
+                <section className={styles.contentDescricao}>
+
+                    <div className={styles.pessoa}>
+                        <div className={styles.pessoaTitulo}>
+                            <h3>Pessoas do Processo<span> {numPessoas}</span> </h3>
+                            <div className={styles.number}>
+                                <button onClick={handlePlus}><AiOutlinePlus size={30} /></button>
+                                <button onClick={handleMinus}><AiOutlineMinus size={30} /></button>
+                            </div>
+                        </div>
+                        <div >
+                            <ul className={styles.pessoaLista}>
+                                {descricaoPessoa.map((item, index) => {
+                                    return (
+                                        <li className={styles.pessoaDados} key={index}>
+                                            <Input type="text" placeholder="nome" value={item.nome} onChange={(e) => handleChangeNomeDesc(e, index)} />
+                                            <Input type="text" placeholder="cpf" value={item.cpf} onChange={(e) => handleChangeCpfDesc(e, index)} />
+                                            <Input type="text" placeholder="email" value={item.email} onChange={(e) => handleChangeEmailDesc(e, index)} />
+                                            <Input type="text" placeholder="telefone" value={item.telefone} onChange={(e) => handleChangeTelefoneDesc(e, index)} />
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </div>
+                        <textarea name="observacao" placeholder="Observação" value={observacao} maxLength={340} onChange={(e) => setObservacao(e.target.value)} ></textarea>
+                    </div>
+
+                    <div className={styles.encaminhar}>
+                        <label htmlFor="encaminhar">Encaminhar para:</label>
+                        <Dropdown id="encaminhar" selection onChange={(e, data) => handleChangeDepartamento(data)} value={selectDepartamento} options={
+                            departamentoList.map((item, index) => {
                                 return (
-                                    <Table.Row key={index}>
-                                        <Table.Cell><Input type="text" value={item.lote} onChange={(e) => handleChangeLoteDesc(e, index)} placeholder='ex: "00-X"' /></Table.Cell>
-                                        <Table.Cell><Input type="text" value={item.area} onChange={(e) => handleChangeAreaDesc(e, index)} placeholder='ex: "000.00"' /></Table.Cell>
-                                        <Table.Cell><Input type="text" value={item.testada} onChange={(e) => handleChangeTestadaDesc(e, index)} placeholder='ex: "00.00"' /></Table.Cell>
-                                    </Table.Row>
+                                    { key: item.id, value: index, text: item.nome }
                                 )
-                            })}
+                            })
+                        }>
+                        </Dropdown >
+                    </div>
+                    <Button color="blue" onClick={handleNewProcess} className={styles.enviar}>Enviar</Button>
 
-                        </Table.Body>
-                    </Table>
-                </div>
-                <textarea name="observacao" placeholder="Observação" value={observacao} maxLength={340} onChange={(e) => setObservacao(e.target.value)} ></textarea>
-                <div className={styles.encaminhar}>
-                    <label htmlFor="encaminhar">Encaminhar para: </label>
-                    <Dropdown id="encaminhar" selection onChange={(e, data) => handleChangeDepartamento(data)} value={selectDepartamento} options={
-                        departamentos.map((item, index) => {
-                            return (
-                                { key: item.id, value: index, text: item.nome }
-                            )
-                        })
-                    }>
-
-                    </Dropdown>
-                </div>
-                <Button color="blue" onClick={handleNewProcess} className={styles.enviar}>Enviar</Button>
+                </section>
             </section>
         </div>
     )
+
 }
+
+

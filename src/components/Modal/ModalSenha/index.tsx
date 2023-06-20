@@ -9,7 +9,6 @@ interface ModalConfirmProps {
     isOpen: boolean;
     onRequestClose: () => void;
     id: string;
-
 }
 
 export function ModalSenha({ isOpen, onRequestClose, id }: ModalConfirmProps) {
@@ -65,7 +64,6 @@ return (
                 </Button>
             </div>
         </div>
-
 
     </Modal>
 )

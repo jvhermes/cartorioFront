@@ -3,7 +3,7 @@ import Modal from 'react-modal'
 import { setupAPIClient } from "../../../../services/api"
 import { useState } from "react"
 import { FiX } from "react-icons/fi"
-import { ModalConfirm } from "../../ModalConfirmProcess"
+import { ModalConfirm } from "../ModalConfirmProcess"
 import { ItemProcessoCartorioProps } from "../../../../pages/prefeitura"
 import { Button, Tab, Table } from "semantic-ui-react"
 
@@ -68,7 +68,7 @@ export function ModalProcessCartorioEnviado({ isOpen, onRequestClose, processo }
                                 </Table.Row>
                             </Table.Header>
                             <tbody>
-                                {processo.descricao.map((item) => {
+                                {processo.descricaoPessoas.map((item) => {
                                     return (
                                         <Table.Row key={item.id}>
                                             <Table.Cell><span>{item.nome}</span></Table.Cell>
@@ -116,7 +116,7 @@ export function ModalProcessCartorioEnviado({ isOpen, onRequestClose, processo }
 
             </div>
             {modalConfirmOpen &&
-                (<ModalConfirm isOpen={modalConfirmOpen} onRequestClose={closeModal} id={processo.id} type={2} />
+                (<ModalConfirm isOpen={modalConfirmOpen} onRequestClose={closeModal} idRecebido={processo.id} type={2} />
                 )}
         </Modal>
     )

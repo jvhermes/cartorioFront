@@ -21,14 +21,14 @@ interface DashboardRecebidosProps {
 
     processCartorioList: ItemProcessoCartorioProps[];
     admin: boolean;
-    avatar:string
+    avatar: string
 }
 
 Modal.setAppElement("#__next")
 
 
 
-export default function DashboardPrefeitura({ processCartorioList, admin,avatar }: DashboardRecebidosProps) {
+export default function DashboardPrefeitura({ processCartorioList, admin, avatar }: DashboardRecebidosProps) {
 
 
     const [processos, setCartorio] = useState(processCartorioList || [])
@@ -131,7 +131,7 @@ export default function DashboardPrefeitura({ processCartorioList, admin,avatar 
 
             </Head>
             <main className={styles.main}>
-                <SidebarPrefeitura admin={admin} avatar={avatar}/>
+                <SidebarPrefeitura admin={admin} avatar={avatar} />
                 <div className={styles.container} >
                     <div className={styles.title}>
                         <div>
@@ -270,9 +270,9 @@ export default function DashboardPrefeitura({ processCartorioList, admin,avatar 
                         </div>
                     </section>
                 </div>
-            </main> 
+            </main>
             <footer className={styles.footer}>
-                    <strong>Copyright</strong> SICART - CIT © 2023
+                <strong>Copyright</strong> SICART - CIT © 2023
             </footer>
 
             {modalProcessoCartorioOpen && (
@@ -292,8 +292,8 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
 
     const response = await apiClient.get("/me")
 
-    const { tipo, setor, admin,avatar } = response.data;
-
+    const { tipo, setor, admin, avatar } = response.data;
+    
     if (tipo === '2') {
         return {
             redirect: {
@@ -302,28 +302,34 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
             }
         }
     }
+    if(admin){
+        const responseProcessCartorio = await apiClient.get('/processocartorio/admin/lista')
 
-    const [
+        return {
+            props: {
+                admin: admin,
+                avatar: avatar,
+                processCartorioList: responseProcessCartorio.data,
 
-        responseProcessCartorio,
-
-
-    ] = await Promise.all([
-
-        apiClient.get('/processocartorio/lista/setor', {
+            }
+        }
+    }else{
+        const responseProcessCartorio = await apiClient.get('/processocartorio/lista/setor', {
             params: {
                 set: setor
             }
         })
-    ])
-
-    return {
-        props: {
-            admin: admin,
-            avatar:avatar,
-            processCartorioList: responseProcessCartorio.data,
-
+    
+    
+        return {
+            props: {
+                admin: admin,
+                avatar: avatar,
+                processCartorioList: responseProcessCartorio.data,
+    
+            }
         }
     }
+   
 
 })

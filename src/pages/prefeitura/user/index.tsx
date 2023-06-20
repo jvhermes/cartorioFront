@@ -8,7 +8,7 @@ import { List,Image,Button } from "semantic-ui-react"
 import { setupAPIClient } from "../../../services/api"
 import { ModalSenha } from "../../../components/Modal/ModalSenha"
 
-type UserProps = {
+export type UserProps = {
     id: string;
     nome: string;
     email: string;
@@ -17,6 +17,7 @@ type UserProps = {
     setor: string;
     departamento: string;
     avatar:string;
+    ativo:boolean;
 }
 export type PerfilListProps = {
     id: string;

@@ -143,7 +143,7 @@ export default function DashboardPrefeitura({ processList, setorList, tipoList, 
 
             </Head>
          
-                <main >
+                <main className={styles.main} >
                     <SidebarCartorio avatar={avatar} admin={admin} />
                     <div className={styles.container} >
                         <div className={styles.title}>
@@ -298,31 +298,55 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
             }
         }
     }
-
-    const [
-        responseProcess,
-        responseSetor,
-        responseTipo,
-
-    ] = await Promise.all([
-        apiClient.get('/processocartorio/lista/departamento', {
-            params: {
-                dep: departamento
+    if (admin){
+        const [
+            responseProcess,
+            responseSetor,
+            responseTipo,
+    
+        ] = await Promise.all([
+            apiClient.get('/processocartorio/admin/lista'),
+            apiClient.get('/setor/lista'),
+            apiClient.get('/tipo/lista'),
+    
+        ])
+    
+        return {
+            props: {
+                processList: responseProcess.data,
+                setorList: responseSetor.data,
+                tipoList: responseTipo.data,
+                admin: admin,
+                avatar: avatar
             }
-        }),
-        apiClient.get('/setor/lista'),
-        apiClient.get('/tipocartorio/lista'),
-
-    ])
-
-    return {
-        props: {
-            processList: responseProcess.data,
-            setorList: responseSetor.data,
-            tipoList: responseTipo.data,
-            admin: admin,
-            avatar: avatar
+        }
+    }else{
+        const [
+            responseProcess,
+            responseSetor,
+            responseTipo,
+    
+        ] = await Promise.all([
+            apiClient.get('/processocartorio/lista/departamento', {
+                params: {
+                    dep: departamento
+                }
+            }),
+            apiClient.get('/setor/lista'),
+            apiClient.get('/tipo/lista'),
+    
+        ])
+    
+        return {
+            props: {
+                processList: responseProcess.data,
+                setorList: responseSetor.data,
+                tipoList: responseTipo.data,
+                admin: admin,
+                avatar: avatar
+            }
         }
     }
+   
 
 })

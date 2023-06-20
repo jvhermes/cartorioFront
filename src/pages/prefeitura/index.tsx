@@ -32,14 +32,14 @@ export type ItemLoteProps = {
     testada: string;
 }
 
-export type DescricaoPrefeitura = {
+export type DescricaoLotes = {
     id: string;
     lote: string;
     area: string;
     testada: string;
 }
 
-export type DescricaoCartorio = {
+export type DescricaoPessoas = {
     id: string;
     nome: string;
     cpf: string;
@@ -72,7 +72,8 @@ export type ItemProcessoCartorioProps = {
         nome: string;
     }
     lote: ItemLoteProps;
-    descricao: DescricaoCartorio[];
+    descricaoPessoas: DescricaoPessoas[];
+    descricaoLotes: DescricaoLotes[];
 }
 
 export type DescricaoAprovacao = {
@@ -88,7 +89,6 @@ export type Reenvio = {
     observacao: string;
     nome: string;
     enviado_de: string;
-    setorFonte_id: string;
     aprovacao_id: string;
 }
 export type ItemAprovacaoProps = {
@@ -96,6 +96,14 @@ export type ItemAprovacaoProps = {
     observacao: string;
     processo_id: number;
     descricao: DescricaoAprovacao[];
+    reenvio: Reenvio[];
+    alvara: string;
+}
+
+export type ItemAprovacaoPessoaProps = {
+    id: string;
+    observacao: string;
+    processo_id: number;
     reenvio: Reenvio[];
     alvara: string;
 }
@@ -143,8 +151,12 @@ export type ItemProcessProps = {
         nome: string;
     }
     lote: Lote[];
-    descricao: DescricaoPrefeitura[];
+    descricaoLotes: DescricaoLotes[];
+    descricaoPessoas: DescricaoPessoas[];
     aprovacao: ItemAprovacaoProps;
+    aprovacaoPessoa: ItemAprovacaoPessoaProps;
+    tipoLote:boolean;
+    conclusao:string;
 }
 
 export type ItemCadastroProps = {
@@ -467,37 +479,74 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
         }
     }
 
-    const [
-        responseProcess,
-        responseAtividade,
-        responseDepartamento,
-        responseTipo,
-        responseSetor
+    if (admin) {
+        const [
+            responseProcess,
+            responseAtividade,
+            responseDepartamento,
+            responseTipo,
+            responseSetor
 
-    ] = await Promise.all([
-        apiClient.get('/processo/lista/setor', {
-            params: {
-                set: setor
+        ] = await Promise.all([
+            apiClient.get('/processo/admin/lista', {
+                params: {
+                    set: setor
+                }
+            }),
+
+            apiClient.get('/atividade/lista'),
+            apiClient.get('/departamento/lista'),
+            apiClient.get('/tipo/lista'),
+            apiClient.get('/setor/lista'),
+
+        ])
+
+        return {
+            props: {
+                processList: responseProcess.data,
+                atividadeList: responseAtividade.data,
+                departamentoList: responseDepartamento.data,
+                tipoList: responseTipo.data,
+                setorList: responseSetor.data,
+                admin: admin,
+                avatar: avatar
             }
-        }),
-
-        apiClient.get('/atividade/lista'),
-        apiClient.get('/departamento/lista'),
-        apiClient.get('/tipo/lista'),
-        apiClient.get('/setor/lista'),
-
-    ])
-
-    return {
-        props: {
-            processList: responseProcess.data,
-            atividadeList: responseAtividade.data,
-            departamentoList: responseDepartamento.data,
-            tipoList: responseTipo.data,
-            setorList: responseSetor.data,
-            admin: admin,
-            avatar: avatar
         }
+
+    } else {
+        const [
+            responseProcess,
+            responseAtividade,
+            responseDepartamento,
+            responseTipo,
+            responseSetor
+
+        ] = await Promise.all([
+            apiClient.get('/processo/lista/setor', {
+                params: {
+                    set: setor
+                }
+            }),
+
+            apiClient.get('/atividade/lista'),
+            apiClient.get('/departamento/lista'),
+            apiClient.get('/tipo/lista'),
+            apiClient.get('/setor/lista'),
+
+        ])
+
+        return {
+            props: {
+                processList: responseProcess.data,
+                atividadeList: responseAtividade.data,
+                departamentoList: responseDepartamento.data,
+                tipoList: responseTipo.data,
+                setorList: responseSetor.data,
+                admin: admin,
+                avatar: avatar
+            }
+        }
+
     }
 
 })

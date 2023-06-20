@@ -20,23 +20,25 @@
     .observacao{
         background-color:#dddddf;;
         color: var(--black);
-        width: 450px;
-        height: 190px;
+        width: 550px;
+        height: 150px;
         border-radius: 0.3rem;
         padding: 1rem;
         word-wrap: break-word;
         margin: 1rem 0;
+        overflow: auto;
     }
     
     .reenvio{
         background-color:#dddddf;;
         color: var(--black);
-        width: 450px;
-        height: 100px;
+        width: 550px;
+        height: 130px;
         border-radius: 0.3rem;
         padding: 1rem;
         word-wrap: break-word;
         margin: 1rem 0;
+        overflow: auto;
     }
     .prazo{
         color: var(--white);
@@ -53,7 +55,19 @@
 }
 
 
+.finais{
+    margin: 1rem 0;
+    height: 300px;
+    padding: 1rem;
+    gap: 2rem;
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color:var(--white);
+    border: 1px solid #dddddf;
 
+}
 
 .button{
     display: flex;
@@ -153,8 +167,9 @@
 
 
 .tableContainer{
-    width: 550px;
-    margin-top: 1rem;
+    width: 650px;
+    margin: 1rem 0;
+    padding: 1rem 0;
 }
 .table{
     td,th{

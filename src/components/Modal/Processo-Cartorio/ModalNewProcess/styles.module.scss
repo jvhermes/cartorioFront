@@ -19,20 +19,22 @@
 }
 .content{
     margin-top: 1rem;
-    height: 550px;
-    select{
-        width: 220px;
-        height: 30px;
-        background-color: var(--gray);
-        border-radius: 0.3rem;
-    }
     textarea,input{
         color: var(--black);
+    }
+    textarea{
+        width: 20rem;
+        height: 50px;
+        margin:5px 6px;
+        border-radius: 0.2rem;
+        padding: 5px;
+        overflow: hidden;
+        background-color: #F3F3F4;
     }
 }
 
 .filter{
-    height: 360px;
+
     border: 1px solid #dddddf;
     background-color:var(--white);
     border-radius: 0.2rem;
@@ -69,6 +71,31 @@
     display: flex;
     h1{
         margin: 0 auto;
+    }
+}
+
+.tableContainer{
+    width: 670px;
+    margin-top: 1rem;
+}
+
+.table{
+    td,th{
+        width: 30%;
+    }
+}
+
+.number{
+    margin: 1rem 0;
+    span{
+        margin-right: 3rem;
+        font-size: 1.3rem;
+    }
+    button{
+        background-color: transparent;
+        color: var(--red);
+        border: none;
+        margin: 0 1rem;
     }
 }
 
@@ -109,53 +136,6 @@
 }
 
 
-.description{
-    border: 1px solid #dddddf;
-    background-color:var(--white);
-    border-radius: 0.2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 260px;
-    textarea{
-        width: 260px;
-        height: 35px;
-        border-radius: 0.3rem;
-        padding: 0.3rem;
-        background-color: #F3F3F4;
-    }
-    h3{
-        
-        margin-left: 1rem;
-        margin-top: 1rem;
-    }
-    .descriptionArea{
-        margin-bottom: 2rem;
-        display: flex;
-        gap: 2rem;
-        div{
-            display: flex;
-            flex-direction: column;
-        }
-    }
-    label{
-        margin-left: 4px;
-    }
-    .descriptionMemorando{
-        display: flex;
-        flex-direction: column;
-        textarea{
-            height: 65px;
-            width: 650px;
-            border-radius: 0.3rem;
-            padding: 0.4rem;
-            color: var(--black);
-            overflow: hidden;
-            background-color: #F3F3F4;
-        }
-    }
-
-}
 
 
 .end{
@@ -259,3 +239,77 @@
     }
 }
 
+.contentDescricao{
+
+    background-color: var(--white);
+    border: 1px solid #dddddf;
+    padding: 3rem 0;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    select{
+        margin: 1rem;
+    }
+    h3{
+        margin-top: 1rem;
+    }
+    textarea{
+        background-color: #F3F3F4;
+        width: 70%;
+        margin: 2rem 0;
+        height: 85px;
+        border-radius: 0.2rem;
+        padding: 0.3rem;
+        overflow: hidden;
+    }
+}
+
+.description{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #dddddf;
+    background-color:var(--white);
+    border-radius: 0.1rem;
+    margin: 1rem 0;
+    ul{
+        width: 80%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    li{
+        list-style: none;
+        display: flex;
+        gap:1rem;
+        margin-bottom: 10px;
+    }
+    h3{
+        
+        margin-left: 1rem;
+        margin-top: 1rem;
+    }
+    div{
+        width: 80%;
+        margin: 0 auto;
+    }
+    label{
+        margin-left: 7px;
+    }
+}
+
+
+.encaminhar{
+    display: flex;
+    align-items: center;
+    padding: 2rem 0;
+    gap: 1rem;
+}
+
+.enviar{
+    width: 200px;
+    height: 35px;
+  
+}

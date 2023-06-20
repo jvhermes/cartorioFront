@@ -9,26 +9,23 @@ import { Dropdown, Input, Table, Button, TextArea } from "semantic-ui-react"
 import { toast } from "react-toastify"
 
 interface NewProcessProps {
-    atividade: ItemCadastroProps;
+    
     tipo: ItemCadastroProps;
-    departamentoList: ItemCadastroProps[];
+    setorList: ItemCadastroProps[];
     loteList: ItemLoteProps[];
-    numero_processo: string;
-    ano: string;
-    criado_em: string
+ 
+   
 }
 
-export function Desmembramento({ atividade, tipo, departamentoList, loteList, numero_processo, ano, criado_em }: NewProcessProps) {
+export function DesmembramentoCartorio({  tipo, setorList, loteList, }: NewProcessProps) {
 
     const tipo_id = tipo.id;
-    const atividade_id = atividade.id;
-    const num_processo = numero_processo
 
     const [lote_id, setLote_id] = useState<Ids[]>([])
     const [observacao, setObservacao] = useState("")
 
-    const [departamentos, setDepartamentos] = useState(departamentoList || []);
-    const [selectDepartamento, setSelectDepartamento] = useState(0)
+    const [setores, setSetores] = useState(setorList || []);
+    const [selectSetor, setSelectSetor] = useState(0)
 
     const [numLotes, setNumLotes] = useState(0)
     const [descricaoLotes, setDescricao] = useState<Descricao[]>([])
@@ -166,8 +163,8 @@ export function Desmembramento({ atividade, tipo, departamentoList, loteList, nu
     }
 
 
-    function handleChangeDepartamento(data) {
-        setSelectDepartamento(data.value)
+    function handleChangeSetor(data) {
+        setSelectSetor(data.value)
     }
 
     function handleChangeBairro(data) {
@@ -198,37 +195,25 @@ export function Desmembramento({ atividade, tipo, departamentoList, loteList, nu
 
     async function handleNewProcess() {
 
+   
         const apiClient = setupAPIClient()
-        const departamento_id = departamentos[selectDepartamento].id
+
+        const setor_id = setores[selectSetor].id
         const prazo = 180
+
         const response = await apiClient.get("/me")
-        const { setor_id } = response.data;
+        const { departamento_id } = response.data;
+
         const descricaoPessoa = []
-        const tipoLote = true
-        const texto = observacao
-
-        if (num_processo === "" || atividade_id === "" || departamento_id === "" || lote_id[0] === null ||
-            descricaoLotes[0].area === "" || tipo_id === "" || setor_id === "" || ano === "" || criado_em === "") {
-
-            toast.error("Preencha todos os campos")
-            return
-        }
-
-        console.log(setor_id)
-
         try {
-            await apiClient.post("/processo", {
-                num_processo, prazo, atividade_id, departamento_id,
-                lote_id, descricaoLotes,descricaoPessoa, tipo_id, setor_id, ano, criado_em,tipoLote,texto
+            await apiClient.post("/processocartorio", {
+                observacao, prazo, descricaoPessoa, descricaoLote, lote_id,
+                setor_id, departamento_id, tipo_id
             })
-
-
             location.reload()
-        } catch(err) {
-            console.log(err)
+        } catch {
             toast.error("Erro ao enviar processo")
         }
-
 
     }
 
@@ -364,8 +349,8 @@ export function Desmembramento({ atividade, tipo, departamentoList, loteList, nu
                 <textarea name="observacao" placeholder="Observação" value={observacao} maxLength={340} onChange={(e) => setObservacao(e.target.value)} ></textarea>
                 <div className={styles.encaminhar}>
                     <label htmlFor="encaminhar">Encaminhar para: </label>
-                    <Dropdown id="encaminhar" selection onChange={(e, data) => handleChangeDepartamento(data)} value={selectDepartamento} options={
-                        departamentos.map((item, index) => {
+                    <Dropdown id="encaminhar" selection onChange={(e, data) => handleChangeSetor(data)} value={selectSetor} options={
+                        setores.map((item, index) => {
                             return (
                                 { key: item.id, value: index, text: item.nome }
                             )

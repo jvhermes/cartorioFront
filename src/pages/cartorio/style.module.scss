@@ -1,4 +1,7 @@
-
+.main{
+  
+    height:95vh;
+}
 .container{
     align-items: center;
     justify-content: center;
@@ -112,15 +115,22 @@
         padding: 0 5px;
         color: var(--text);
     }
-    .pendente{
+    .atrasado{
         background-color: var(--red);
         width: 100px;
         justify-content: center;
         border-radius: 0.2rem;
         color: var(--white);
     }
-    .respondido{
+    .pendente{
         background-color: var(--gray);
+        width: 100px;
+        justify-content: center;
+        border-radius: 0.2rem;
+        color: var(--white);
+    }
+    .respondido{
+        background-color: var(--color2);
         width: 100px;
         justify-content: center;
         border-radius: 0.2rem;

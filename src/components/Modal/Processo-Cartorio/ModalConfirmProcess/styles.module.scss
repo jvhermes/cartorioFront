@@ -1,0 +1,21 @@
+.container{
+  
+   
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title{
+    padding: 2rem;
+}
+
+.botao{
+    padding: 3rem 0;
+    display: flex;
+    gap:15px;
+    button{
+        width: 200px;
+       
+    }
+}

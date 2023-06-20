@@ -3,6 +3,7 @@ import Modal from 'react-modal'
 import { useState } from "react"
 import { Desmembramento } from "./desmembramento"
 import { Remembramento } from "./remembramento"
+import { Pessoa } from "./pessoa"
 import { Input,Dropdown,Button} from "semantic-ui-react"
 
 
@@ -36,25 +37,29 @@ export function ModalNewProcess({ isOpen, onRequestClose, atividadeList, departa
 
     const [showDesmembramento, setShowDesmembramento] = useState(false)
     const [showRemembramento, setShowRemembramento] = useState(true)
+    const [showPessoa, setShowPessoa] = useState(false)
 
 
     function handleChangeTipo(data) {
         setSelectTipo(data.value);
-
+        setTitulo(tipos[data.value].nome)
         if (tipos[data.value].nome === "remembramento") {
             setShowDesmembramento(false)
             setShowRemembramento(true)
-            setTitulo("Remembramento")
+            setShowPessoa(false)
+            
             return
         }
         if (tipos[data.value].nome === "desmembramento") {
             setShowRemembramento(false)
             setShowDesmembramento(true)
-    
-            setTitulo("Desmembramento")
+            setShowPessoa(false)
+           
             return
         }
-
+        setShowPessoa(true)
+        setShowDesmembramento(false)
+        setShowRemembramento(false)
     }
 
     function handleChangeAtividade(data) {
@@ -70,7 +75,9 @@ export function ModalNewProcess({ isOpen, onRequestClose, atividadeList, departa
             transform: "translate(-50%,-50%)",
             backgroundColor: "#F3F3F4",
             width: "1020px",
-            height: "870px"
+            height: "800px",
+            maxWidth: "90vw",
+            maxHeight: "85vh"
         }
     }
 
@@ -125,6 +132,10 @@ export function ModalNewProcess({ isOpen, onRequestClose, atividadeList, departa
             {showRemembramento && (
                 <Remembramento atividade={atividades[selectAtividade]} tipo={tipos[selectTipo]} departamentoList={departamentoList}
                     loteList={lotes} numero_processo={num_processo} ano={ano} criado_em={criado_em} />
+            )}
+            {showPessoa && (
+                <Pessoa atividade={atividades[selectAtividade]} tipo={tipos[selectTipo]} departamentoList={departamentoList}
+                loteList={lotes} numero_processo={num_processo} ano={ano} criado_em={criado_em} />
             )}
         </Modal>
     )
