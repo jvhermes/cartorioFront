@@ -101,9 +101,7 @@ export default function User({ user, admin,avatar }: TelaUsuarioProps) {
                     </div>
                 </section>
             </main >
-            <footer className={styles.footer}>
-                    <strong>Copyright</strong> SICART - CIT © 2023
-            </footer>
+
         {modalSenhaOpen && (
             <ModalSenha isOpen={modalSenhaOpen} onRequestClose={closeModal} id={user.id} />
         )}

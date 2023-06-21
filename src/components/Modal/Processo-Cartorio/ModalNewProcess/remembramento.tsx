@@ -175,11 +175,12 @@ export function RemembramentoCartorio({  tipo, setorList, loteList }: NewProcess
         const response = await apiClient.get("/me")
         const { departamento_id } = response.data;
 
+        const tipoLote = true
         const descricaoPessoa = []
         try {
             await apiClient.post("/processocartorio", {
                 observacao, prazo, descricaoPessoa, descricaoLote, lote_id,
-                setor_id, departamento_id, tipo_id
+                setor_id, departamento_id, tipo_id,tipoLote
             })
             location.reload()
         } catch {

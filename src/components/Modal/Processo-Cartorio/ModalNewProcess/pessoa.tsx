@@ -4,7 +4,7 @@ import { useState } from "react"
 import { setupAPIClient } from "../../../../services/api"
 import { Input, Dropdown, Button } from "semantic-ui-react"
 import { AiOutlinePlus, AiOutlineMinus, AiOutlineLeft, AiOutlineRight } from "react-icons/ai"
-
+import { Ids } from "./remembramento"
 import { ItemCadastroProps, ItemLoteProps } from "../../../../pages/prefeitura"
 import { FiX } from "react-icons/fi"
 import { toast } from "react-toastify"
@@ -25,7 +25,7 @@ interface ModalNewProcessProps {
 export function PessoaCartorio({ setorList, tipo, loteList }: ModalNewProcessProps,) {
 
     const tipo_id = tipo.id
-    const [lote_id, setLote_id] = useState(0)
+    const [lote_id, setLotesID] = useState<Ids[]>([])
     const [setores, setSetores] = useState(setorList || []);
     const [selectSetor, setSelectSetor] = useState(0)
     const [observacao, setObservacao] = useState("")
@@ -34,8 +34,6 @@ export function PessoaCartorio({ setorList, tipo, loteList }: ModalNewProcessPro
     const [numPessoas, setNumPessoas] = useState(0)
     const [descricaoPessoa, setDescricao] = useState<Descricao[]>([])
 
-    const [selectTipo, setSelectTipo] = useState(0)
-
 
     const [endereco, setEndereco] = useState("")
     const [matricula, setMatricula] = useState("")
@@ -43,6 +41,7 @@ export function PessoaCartorio({ setorList, tipo, loteList }: ModalNewProcessPro
 
     const [descricaoCod, setDescricaoCod] = useState(" ")
     const [descricaoProp, setDescricaoProp] = useState(" ")
+    const [descricaoLotes, setDescricaoLote] = useState(" ")
 
     const [selectInsc, setSelectInsc] = useState("")
     const [selectQuadra, setSelectQuadra] = useState("")
@@ -70,9 +69,10 @@ export function PessoaCartorio({ setorList, tipo, loteList }: ModalNewProcessPro
 
         const loteUnico: ItemLoteProps = response.data
 
-        setLote_id(loteUnico.id)
+        lote_id.push({ id: loteUnico.id })
         setDescricaoCod(loteUnico.codigo_imovel)
         setDescricaoProp(loteUnico.proprietario)
+        setDescricaoLote(loteUnico.lote)
         setArea(loteUnico.area_total)
         setEndereco(`${loteUnico.logradouro}, Número: ${loteUnico.numero}`)
     }
@@ -81,9 +81,10 @@ export function PessoaCartorio({ setorList, tipo, loteList }: ModalNewProcessPro
         setDescricaoProp("")
         setArea("")
         setEndereco("")
-        setLote_id(0)
+        lote_id.pop()
         return
     }
+
 
 
     //bairros unicos
@@ -170,9 +171,7 @@ export function PessoaCartorio({ setorList, tipo, loteList }: ModalNewProcessPro
         setNumPessoas(numPessoas + 1)
     }
 
-    function handleChangeTipo(data) {
-        setSelectTipo(data.value);
-    }
+
 
     function handleChangeSetor(data) {
         setSelectSetor(data.value)
@@ -218,10 +217,7 @@ export function PessoaCartorio({ setorList, tipo, loteList }: ModalNewProcessPro
 
     async function handleNewProcess() {
 
-        if (lote_id === 0) {
-            toast.error("selecione um lote")
-            return
-        }
+
         const apiClient = setupAPIClient()
 
         const setor_id = setores[selectSetor].id
@@ -229,12 +225,13 @@ export function PessoaCartorio({ setorList, tipo, loteList }: ModalNewProcessPro
 
         const response = await apiClient.get("/me")
         const { departamento_id } = response.data;
-
+        const tipoLote = false
         const descricaoLote = []
+
         try {
             await apiClient.post("/processocartorio", {
                 observacao, prazo, descricaoPessoa, descricaoLote, lote_id,
-                setor_id, departamento_id, tipo_id
+                setor_id, departamento_id, tipo_id, tipoLote
             })
             location.reload()
         } catch {
@@ -247,7 +244,7 @@ export function PessoaCartorio({ setorList, tipo, loteList }: ModalNewProcessPro
 
     return (
         <div>
-     
+
             <div className={styles.content}>
                 <div className={styles.filter}>
                     <h3>Filtro:</h3>
@@ -317,28 +314,30 @@ export function PessoaCartorio({ setorList, tipo, loteList }: ModalNewProcessPro
                                 <li>
                                     <span>Código: <strong>{descricaoCod} </strong></span>
                                     <span>Proprietário: <strong>{descricaoProp}</strong> </span>
+                                    <span>Lote: <strong>{descricaoLotes}</strong> </span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div className={styles.description}>
-                    <h3>Seleção:</h3>
-                    <div className={styles.descriptionArea}>
-                        <div>
-                            <label htmlFor="matricula">Matrícula</label>
-                            <textarea id="matricula" name="matricula" value={matricula} placeholder="Matricula" readOnly={true}></textarea>
-                        </div>
-                        <div>
-                            <label htmlFor="endereço">Endereço</label>
-                            <textarea name="endereco" value={endereco} placeholder="Endereco" className={styles.endereco} readOnly={true}></textarea>
-                        </div>
-                        <div>
-                            <label htmlFor="area">Area</label>
-                            <textarea name="area" value={area} placeholder="Area" readOnly={true}></textarea>
-                        </div>
-                    </div>
-
+                    <h3>Seleções:</h3>
+                    <ul>
+                        <li>
+                            <div>
+                                <label htmlFor="matricula">Matrícula</label>
+                                <textarea id="matricula" name="matricula" value={matricula} placeholder="Matricula" readOnly={true}></textarea>
+                            </div>
+                            <div>
+                                <label htmlFor="endereco">Endereço</label>
+                                <textarea id="endereco" name="endereco" value={endereco} placeholder="Endereco" className={styles.endereco} readOnly={true}></textarea>
+                            </div>
+                            <div>
+                                <label htmlFor="area">Area</label>
+                                <textarea id="area" name="area" value={area} placeholder="Area" readOnly={true}></textarea>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
                 <div className={styles.end}>
                     <div className={styles.pessoa}>
@@ -365,19 +364,21 @@ export function PessoaCartorio({ setorList, tipo, loteList }: ModalNewProcessPro
                         </div>
                         <textarea name="observacao" placeholder="Observação" value={observacao} maxLength={272} onChange={(e) => setObservacao(e.target.value)} ></textarea>
                     </div>
-                    <div className={styles.enviar}>
-                        <div>
-                            <label htmlFor="encaminhar">Encaminhar para (setores)</label>
-                            <Dropdown id="encaminhar" selection onChange={(e, data) => handleChangeSetor(data)} value={selectSetor} options={
-                                setores.map((item, index) => {
-                                    return (
-                                        { key: item.id, value: index, text: item.nome }
-                                    )
-                                })
-                            }>
-                            </Dropdown >
-                        </div>
+                    <div className={styles.encaminhar}>
+                        <label htmlFor="encaminhar">Encaminhar para: </label>
+                        <Dropdown id="encaminhar" selection onChange={(e, data) => handleChangeSetor(data)} value={selectSetor} options={
+                            setores.map((item, index) => {
+                                return (
+                                    { key: item.id, value: index, text: item.nome }
+                                )
+                            })
+                        }>
+
+                        </Dropdown>
+                    </div>
+                    <div>
                         <Button color="blue" onClick={handleNewProcess} className={styles.enviar}>Enviar</Button>
+
                     </div>
                 </div>
             </div>

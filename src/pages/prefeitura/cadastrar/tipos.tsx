@@ -90,9 +90,7 @@ export default function Cadastrar({ tipoList, admin, avatar }: CadastroProps) {
                     </div>
                 </div>
             </main>
-            <footer className={styles.footer}>
-                <strong>Copyright</strong> SICART - CIT © 2023
-            </footer>
+
             {modalNewOpen && (
                 <ModalNewCadastro tipo={3} isOpen={modalNewOpen} onRequestClose={closeModal} />
             )}

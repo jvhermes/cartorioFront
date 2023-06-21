@@ -12,18 +12,18 @@ import { ItemCadastroProps } from "../../../../pages/prefeitura"
 interface ModalProcessProps {
     isOpen: boolean;
     onRequestClose: () => void;
-    idRecebido: string;
+    id: number;
     type: number;
 }
 
-export function ModalConfirm({ isOpen, onRequestClose, idRecebido, type }: ModalProcessProps) {
+export function ModalConfirm({ isOpen, onRequestClose, id, type }: ModalProcessProps) {
 
     const excluido = true
     async function handleDelete() {
         const apiCliente = setupAPIClient();
-        
+    
         if (type === 1) {
-            const id = parseInt(idRecebido)
+           
             const conclusao = "*excluído*"
             try {
                 await apiCliente.put("/processo/fechar", {id,conclusao})
@@ -38,7 +38,6 @@ export function ModalConfirm({ isOpen, onRequestClose, idRecebido, type }: Modal
         }
         if (type === 2) {
 
-            const id = idRecebido
             try {
                 await apiCliente.put("/processocartorio/fechar", {
                   

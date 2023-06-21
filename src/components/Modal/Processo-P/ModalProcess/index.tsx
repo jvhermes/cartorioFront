@@ -299,7 +299,7 @@ export function ModalProcess({ isOpen, onRequestClose, processo, setorList }: Mo
 
             )}
             {modalConfirmOpen &&
-                (<ModalConfirm isOpen={modalConfirmOpen} onRequestClose={closeModal} idRecebido={processo.id.toString()} type={1} />
+                (<ModalConfirm isOpen={modalConfirmOpen} onRequestClose={closeModal} id={processo.id} type={1} />
                 )}
             {modalCloseOpen && (
                 <ModalConclusao isOpen={modalCloseOpen} onRequestClose={closeModal} processoId={processo.id}/>

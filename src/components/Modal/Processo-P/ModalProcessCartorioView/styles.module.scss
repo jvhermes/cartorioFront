@@ -1,89 +1,118 @@
+
 .container{
     display: flex;
     flex-direction: column;
-    margin: auto;
     align-items: center;
-    max-width: 700px;
-    color: var(--black);
     p{
-        color: var(--black);
+        margin-top: 1rem;
     }
     strong{
         font-size: 1.1rem;
     }
-
+    overflow: auto;
 }
-
-
 
 .button{
     margin-top: 2rem;
-    button{
-        width: 200px;
-        height: 35px;
-      
-    }
 }
 
 .lotes{
-    border-radius: 0.2rem;
-    width: 100%;
-    margin: 2rem 0;
-
+    padding: 2rem;
+    width: 700px;
+    justify-content: center;
     background-color:var(--white);
     border: 1px solid #dddddf;
-    padding: 1rem;
+    margin: 1rem;
 }
 
+.tabela{
 
+    td,th{
+        width: 25%;
+    }
 
-.observacao{
-    word-wrap:break-word;
-    h3{
-        margin: 1rem 0;
-    }
-    p{
-        background-color: #F3F3F4;
-        color: var(--black);
-        width: 600px;
-        
-        border-radius: 0.3rem;
-        padding: 1rem;
-    }
-    .observacaoMemorando{
-        height: 100px;
-    }
-    .observacaoMaior{
-        height: 140px;
-    }
+}
+.tabelaContainer{
+    width: 440px;
 }
 
 .detalhes{
-    margin-bottom: 1rem;
-    width: 100%;
+    margin-bottom: 2rem ;
+    padding: 1rem;
+    gap: 2rem;
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background-color:var(--white);
     border: 1px solid #dddddf;
-    padding: 1rem;
-}
-.detalhesItem{
-    border-radius: 0.2rem;
-    height: 40px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-
-    p{
-        padding: 0.5rem;
-    }
 }
 
-.descricao,.text{
-    background-color:var(--white);
+.descricao{
+    background-color: var(--white);
     border: 1px solid #dddddf;
-    width: 100%;
-    padding: 1rem;
+    padding: 2rem;
     display: flex;
+    width: 700px;
     flex-direction: column;
     align-items: center;
 }
 
+.detalhesItem{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    p{  
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 170px;
+        padding: 0.5rem;
+    }
+}
+
+
+.observacao{
+    background-color: var(--white);
+    border: 1px solid #dddddf;
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    h3{
+        margin: 1rem 0;
+    }
+    p{
+        background-color:#F3F3F4 ;
+        color: var(--black); 
+        width: 450px;
+        border-radius: 0.3rem;
+        padding: 1rem;
+        word-wrap: break-word;
+    }
+    .observacaoMaior{
+        height: 150px;
+    }
+ 
+   
+}
+.lotesContent{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2rem;
+    width: 700px;
+    justify-content: center;
+    background-color:var(--white);
+    border: 1px solid #dddddf;
+    margin: 2rem;
+}
+.tableContainer{
+    width: 600px;
+    margin-top: 2rem;
+}
+.table{
+    td,th{
+        width: 30%;
+    }
+}

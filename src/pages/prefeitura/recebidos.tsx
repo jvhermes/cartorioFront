@@ -60,7 +60,7 @@ export default function DashboardPrefeitura({ processCartorioList, admin, avatar
     }
 
 
-    async function openProcessCartorioModal(id: string) {
+    async function openProcessCartorioModal(id: number) {
         const apiCliente = setupAPIClient();
 
         const response = await apiCliente.get("/processocartorio/detalhe", {
@@ -97,13 +97,13 @@ export default function DashboardPrefeitura({ processCartorioList, admin, avatar
 
             const num = item.tipo.nome;
 
-            const prop = item.lote.proprietario;
+            const prop = item.lote[0].lote.proprietario;
 
-            const bai = item.lote.bairro;
+            const bai = item.lote[0].lote.bairro;
 
-            const qua = item.lote.quadra;
+            const qua = item.lote[0].lote.quadra;
 
-            const lot = item.lote.lote;
+            const lot = item.lote[0].lote.lote;
 
             const ini = item.criado_em;
 
@@ -173,7 +173,7 @@ export default function DashboardPrefeitura({ processCartorioList, admin, avatar
                                 <datalist id="prop" >
                                     {processos.map((item) => {
                                         return (
-                                            <option key={item.id} value={item.lote.proprietario}></option>
+                                            <option key={item.id} value={item.lote[0].lote.proprietario}></option>
                                         )
                                     })}
                                 </datalist>
@@ -186,7 +186,7 @@ export default function DashboardPrefeitura({ processCartorioList, admin, avatar
                                 <datalist id="bairro" >
                                     {processos.map((item) => {
                                         return (
-                                            <option key={item.id} value={item.lote.bairro}></option>
+                                            <option key={item.id} value={item.lote[0].lote.bairro}></option>
                                         )
                                     })}
                                 </datalist>
@@ -197,12 +197,12 @@ export default function DashboardPrefeitura({ processCartorioList, admin, avatar
                                     {processos.filter((item) => {
 
                                         const searchBairro = bairro.toLowerCase();
-                                        const bair = item.lote.bairro;
+                                        const bair = item.lote[0].lote.bairro;
 
                                         return searchBairro && bair.includes(searchBairro);
                                     }).map((item) => {
                                         return (
-                                            <option key={item.id} value={item.lote.quadra}></option>
+                                            <option key={item.id} value={item.lote[0].lote.quadra}></option>
                                         )
                                     })}
                                 </datalist>
@@ -213,16 +213,16 @@ export default function DashboardPrefeitura({ processCartorioList, admin, avatar
                                     {processos.filter((item) => {
 
                                         const searchBairro = bairro.toLowerCase();
-                                        const bair = item.lote.bairro;
+                                        const bair = item.lote[0].lote.bairro;
 
                                         const searchQuadra = quadra.toLowerCase();
-                                        const qua = item.lote.quadra;
+                                        const qua = item.lote[0].lote.quadra;
 
 
                                         return searchBairro && bair.includes(searchBairro) && searchQuadra && qua.includes(searchQuadra);
                                     }).map((item) => {
                                         return (
-                                            <option key={item.id} value={item.lote.lote}></option>
+                                            <option key={item.id} value={item.lote[0].lote.lote}></option>
                                         )
                                     })}
                                 </datalist>
@@ -257,10 +257,10 @@ export default function DashboardPrefeitura({ processCartorioList, admin, avatar
                                             <button className={styles.processContentResp} onClick={() => openProcessCartorioModal(item.id)}>
                                                 <span>{item.tipo.nome}</span>
                                                 <span>{item.departamento.nome}</span>
-                                                <span>{item.lote.proprietario}</span>
-                                                <span>{item.lote.bairro}</span>
-                                                <span>{item.lote.quadra}</span>
-                                                <span>{item.lote.lote}</span>
+                                                <span>{item.lote[0].lote.proprietario}</span>
+                                                <span>{item.lote[0].lote.bairro}</span>
+                                                <span>{item.lote[0].lote.quadra}</span>
+                                                <span>{item.lote[0].lote.lote}</span>
                                                 <span>{moment(item.criado_em).format("DD/MM/YYYY")}</span>
                                             </button>
                                         </li>
@@ -271,9 +271,6 @@ export default function DashboardPrefeitura({ processCartorioList, admin, avatar
                     </section>
                 </div>
             </main>
-            <footer className={styles.footer}>
-                <strong>Copyright</strong> SICART - CIT © 2023
-            </footer>
 
             {modalProcessoCartorioOpen && (
                 <ModalProcessCartorioView isOpen={modalProcessoCartorioOpen} onRequestClose={closeModal} processo={modalProcessoCartorio} />

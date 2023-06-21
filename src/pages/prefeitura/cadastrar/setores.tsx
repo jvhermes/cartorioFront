@@ -92,9 +92,7 @@ export default function Cadastrar({ setorList, admin, avatar }: CadastroProps) {
                     </div>
                 </div>
             </main>
-            <footer className={styles.footer}>
-                <strong>Copyright</strong> SICART - CIT © 2023
-            </footer>
+ 
             {modalNewOpen && (
                 <ModalNewCadastro tipo={4} isOpen={modalNewOpen} onRequestClose={closeModal} />
             )}

@@ -286,9 +286,7 @@ export default function HistoricoPrefeitura({ processList, admin, avatar, setorL
                 </div>
 
             </main>
-            <footer className={styles.footer}>
-                <strong>Copyright</strong> SICART - CIT © 2023
-            </footer>
+
             {modalProcesoOpen && (
                 <ModalProcess isOpen={modalProcesoOpen} onRequestClose={closeModal} processo={modalProcesso} setorList={setorList} />
 

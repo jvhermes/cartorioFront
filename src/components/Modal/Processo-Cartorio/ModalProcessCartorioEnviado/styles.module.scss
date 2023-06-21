@@ -22,7 +22,7 @@
     justify-content: center;
     background-color:var(--white);
     border: 1px solid #dddddf;
-    margin: 2rem;
+    margin: 1rem;
 }
 
 .tabela{
@@ -94,8 +94,25 @@
     .observacaoMaior{
         height: 150px;
     }
-    .observacaoMemorando{
-        height: 100px;
-    }
+ 
    
+}
+.lotesContent{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2rem;
+    width: 700px;
+    justify-content: center;
+    background-color:var(--white);
+    border: 1px solid #dddddf;
+    margin: 2rem;
+}
+.tableContainer{
+    width: 600px;
+    margin-top: 2rem;
+}
+.table{
+    td,th{
+        width: 30%;
+    }
 }

@@ -48,7 +48,7 @@ export type DescricaoPessoas = {
 }
 
 export type ItemProcessoCartorioProps = {
-    id: string;
+    id: number;
     memorando: string;
     observacao: string;
     criado_em: string;
@@ -71,9 +71,10 @@ export type ItemProcessoCartorioProps = {
         id: string;
         nome: string;
     }
-    lote: ItemLoteProps;
+    lote:  Lote[];
     descricaoPessoas: DescricaoPessoas[];
     descricaoLotes: DescricaoLotes[];
+    tipoLote:boolean;
 }
 
 export type DescricaoAprovacao = {
@@ -440,9 +441,7 @@ export default function DashboardPrefeitura({ processList, atividadeList, depart
                 </div>
 
             </main>
-            <footer className={styles.footer}>
-                <strong>Copyright</strong> SICART - CIT © 2023
-            </footer>
+
 
             {modalProcesoOpen && (
                 <ModalProcess isOpen={modalProcesoOpen} onRequestClose={closeModal} processo={modalProcesso} setorList={setorList} />

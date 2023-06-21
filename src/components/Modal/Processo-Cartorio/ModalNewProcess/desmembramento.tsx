@@ -28,7 +28,7 @@ export function DesmembramentoCartorio({  tipo, setorList, loteList, }: NewProce
     const [selectSetor, setSelectSetor] = useState(0)
 
     const [numLotes, setNumLotes] = useState(0)
-    const [descricaoLotes, setDescricao] = useState<Descricao[]>([])
+    const [descricaoLote, setDescricao] = useState<Descricao[]>([])
 
 
     const [endereco, setEndereco] = useState("")
@@ -37,7 +37,7 @@ export function DesmembramentoCartorio({  tipo, setorList, loteList, }: NewProce
 
     const [descricaoCod, setDescricaoCod] = useState(" ")
     const [descricaoProp, setDescricaoProp] = useState(" ")
-    const [descricaoLote, setDescricaoLote] = useState(" ")
+    const [descricaoLotes, setDescricaoLote] = useState(" ")
 
     const [selectInsc, setSelectInsc] = useState("")
     const [selectQuadra, setSelectQuadra] = useState("")
@@ -108,7 +108,7 @@ export function DesmembramentoCartorio({  tipo, setorList, loteList, }: NewProce
         if (numLotes === 0) {
             return
         }
-        descricaoLotes.pop()
+        descricaoLote.pop()
         setNumLotes(numLotes - 1)
     }
 
@@ -118,7 +118,7 @@ export function DesmembramentoCartorio({  tipo, setorList, loteList, }: NewProce
             return
         }
 
-        descricaoLotes.push({
+        descricaoLote.push({
             area: "",
             lote: "",
             testada: ""
@@ -181,16 +181,16 @@ export function DesmembramentoCartorio({  tipo, setorList, loteList, }: NewProce
     }
 
     function handleChangeLoteDesc(e, index) {
-        descricaoLotes[index].lote = e.target.value
-        setDescricao([...descricaoLotes])
+        descricaoLote[index].lote = e.target.value
+        setDescricao([...descricaoLote])
     }
     function handleChangeAreaDesc(e, index) {
-        descricaoLotes[index].area = e.target.value
-        setDescricao([...descricaoLotes])
+        descricaoLote[index].area = e.target.value
+        setDescricao([...descricaoLote])
     }
     function handleChangeTestadaDesc(e, index) {
-        descricaoLotes[index].testada = e.target.value
-        setDescricao([...descricaoLotes])
+        descricaoLote[index].testada = e.target.value
+        setDescricao([...descricaoLote])
     }
 
     async function handleNewProcess() {
@@ -204,14 +204,16 @@ export function DesmembramentoCartorio({  tipo, setorList, loteList, }: NewProce
         const response = await apiClient.get("/me")
         const { departamento_id } = response.data;
 
+        const tipoLote = true
         const descricaoPessoa = []
         try {
             await apiClient.post("/processocartorio", {
                 observacao, prazo, descricaoPessoa, descricaoLote, lote_id,
-                setor_id, departamento_id, tipo_id
+                setor_id, departamento_id, tipo_id,tipoLote
             })
             location.reload()
-        } catch {
+        } catch(err) {
+            console.log(err)
             toast.error("Erro ao enviar processo")
         }
 
@@ -290,7 +292,7 @@ export function DesmembramentoCartorio({  tipo, setorList, loteList, }: NewProce
                                 <li>
                                     <span>Código: <strong>{descricaoCod} </strong></span>
                                     <span>Proprietário: <strong>{descricaoProp}</strong> </span>
-                                    <span>Lote: <strong>{descricaoLote}</strong> </span>
+                                    <span>Lote: <strong>{descricaoLotes}</strong> </span>
                                 </li>
                             </ul>
                         </div>
@@ -333,7 +335,7 @@ export function DesmembramentoCartorio({  tipo, setorList, loteList, }: NewProce
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
-                            {descricaoLotes.map((item, index) => {
+                            {descricaoLote.map((item, index) => {
                                 return (
                                     <Table.Row key={index}>
                                         <Table.Cell><Input type="text" value={item.lote} onChange={(e) => handleChangeLoteDesc(e, index)} placeholder='ex: "00-X"' /></Table.Cell>

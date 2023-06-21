@@ -66,7 +66,7 @@ export default function DashboardPrefeitura({ processList, setorList, tipoList, 
 
 
 
-    async function openProcessModal(id: string) {
+    async function openProcessModal(id:number) {
 
         const apiCliente = setupAPIClient();
 
@@ -112,13 +112,13 @@ export default function DashboardPrefeitura({ processList, setorList, tipoList, 
 
         const newProcessFilter = processoFilter.filter((item, index) => {
 
-            const prop = item.lote.proprietario;
+            const prop = item.lote[0].lote.proprietario;
 
-            const bai = item.lote.bairro;
+            const bai = item.lote[0].lote.bairro;
 
-            const qua = item.lote.quadra;
+            const qua = item.lote[0].lote.quadra;
 
-            const lot = item.lote.lote;
+            const lot = item.lote[0].lote.lote;
 
             const ini = item.criado_em;
 
@@ -166,7 +166,7 @@ export default function DashboardPrefeitura({ processList, setorList, tipoList, 
                                     <datalist id="bairro" >
                                         {processos.map((item) => {
                                             return (
-                                                <option key={item.id} value={item.lote.bairro}></option>
+                                                <option key={item.id} value={item.lote[0].lote.bairro}></option>
                                             )
                                         })}
                                     </datalist>
@@ -177,12 +177,12 @@ export default function DashboardPrefeitura({ processList, setorList, tipoList, 
                                         {processos.filter((item) => {
 
                                             const searchBairro = bairro.toLowerCase();
-                                            const bair = item.lote.bairro;
+                                            const bair = item.lote[0].lote.bairro;
 
                                             return searchBairro && bair.includes(searchBairro);
                                         }).map((item) => {
                                             return (
-                                                <option key={item.id} value={item.lote.quadra}></option>
+                                                <option key={item.id} value={item.lote[0].lote.quadra}></option>
                                             )
                                         })}
                                     </datalist>
@@ -194,16 +194,16 @@ export default function DashboardPrefeitura({ processList, setorList, tipoList, 
                                         {processos.filter((item) => {
 
                                             const searchBairro = bairro.toLowerCase();
-                                            const bair = item.lote.bairro;
+                                            const bair = item.lote[0].lote.bairro;
 
                                             const searchQuadra = quadra.toLowerCase();
-                                            const qua = item.lote.quadra;
+                                            const qua = item.lote[0].lote.quadra;
 
 
                                             return searchBairro && bair.includes(searchBairro) && searchQuadra && qua.includes(searchQuadra);
                                         }).map((item) => {
                                             return (
-                                                <option key={item.id} value={item.lote.lote}></option>
+                                                <option key={item.id} value={item.lote[0].lote.lote}></option>
                                             )
                                         })}
                                     </datalist>
@@ -244,10 +244,10 @@ export default function DashboardPrefeitura({ processList, setorList, tipoList, 
                                             <li value={index} key={item.id} className={styles.processItem} >
                                                 <button className={styles.processContentEnv} onClick={() => openProcessModal(item.id)}>
                                                     <span>{item.tipo.nome}</span>
-                                                    <span>{item.lote.proprietario}</span>
-                                                    <span>{item.lote.bairro}</span>
-                                                    <span>{item.lote.quadra}</span>
-                                                    <span>{item.lote.lote}</span>
+                                                    <span>{item.lote[0].lote.proprietario}</span>
+                                                    <span>{item.lote[0].lote.bairro}</span>
+                                                    <span>{item.lote[0].lote.quadra}</span>
+                                                    <span>{item.lote[0].lote.lote}</span>
                                                     <span>{moment(item.criado_em).format("DD/MM/YYYY")}</span>
                                                 </button>
                                             </li>
@@ -260,10 +260,7 @@ export default function DashboardPrefeitura({ processList, setorList, tipoList, 
                     </div>
 
                 </main>
-                <footer className={styles.footer}>
-                    <strong>Copyright</strong> SICART - CIT © 2023
-                </footer>
-    
+
             {modalProcesoOpen && (
                 <ModalProcessCartorioEnviado isOpen={modalProcesoOpen} onRequestClose={closeModal} processo={modalProcesso} />
 

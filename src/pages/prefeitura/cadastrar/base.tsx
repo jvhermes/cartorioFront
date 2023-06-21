@@ -97,10 +97,7 @@ export default function Cadastrar({ admin, avatar }: CadastroProps) {
                     </div>
                 </div>
             </main>
-            <footer className={styles.footer}>
-                <strong>Copyright</strong> SICART - CIT © 2023
-            </footer>
-          
+
         </>
 
     )
