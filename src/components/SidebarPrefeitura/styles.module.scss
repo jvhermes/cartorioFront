@@ -1,7 +1,6 @@
 .headerContainer{
     height: 6vh;
     background-color: #F3F3F4;
-   
 }
 .sair{
     width: 150px;
@@ -17,9 +16,7 @@
     background-color: transparent;
 }
 
-.headerLeft{
-    margin-left: 15%;
-}
+
 
 .headerContent{
     height: 6vh;
@@ -36,19 +33,16 @@
     color:var(--gray);
 }   
 
+
 .sidebar{
-   max-width: 200px;
+    max-width: 19rem;
 }
 
+.headerLeft{
+    margin-left: 20rem;
 
-
-.link{
-    transition: all 0.2s;
-    :hover{
-        filter: brightness(1.08);
-    }
-   
 }
+
 
 .headerRigth{
     display: flex;
@@ -57,12 +51,14 @@
 
 
 
-.menuItem{
-    height: 50px;
-}
+
 
 @media (max-width: 720px){
     .headerLeft{
-        margin-left: 30%;
+        margin-left: 50%;
     }
+    .sidebar{
+        max-width: 47%;
+    }
+    
   }

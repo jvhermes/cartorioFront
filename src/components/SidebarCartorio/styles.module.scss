@@ -4,9 +4,6 @@
    
 }
 
-.headerLeft{
-    margin-left: 15%;
-}
 
 .headerContent{
     height: 6vh;
@@ -24,9 +21,13 @@
 }   
 
 .sidebar{
-   max-width: 200px;
+    max-width: 19rem;
 }
 
+.headerLeft{
+    margin-left: 20rem;
+
+}
 
 
 .sair{
@@ -70,6 +71,10 @@
 
 @media (max-width: 720px){
     .headerLeft{
-        margin-left: 30%;
+        margin-left: 50%;
     }
+    .sidebar{
+        max-width: 47%;
+    }
+    
   }

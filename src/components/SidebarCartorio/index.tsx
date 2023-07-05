@@ -80,7 +80,22 @@ export function SidebarCartorio({ admin, avatar }: SideBarRequest) {
                         </Menu.Item>
                     </Link>
 
-
+                </Menu.Item>
+                {admin && (
+                    <Menu.Item>
+                        <Menu.Item header>
+                            <Icon name='configure' />
+                            Configurações
+                        </Menu.Item>
+                        <Link href="/prefeitura/cadastrar/atividades"><Menu.Item link >Atividades</Menu.Item></Link>
+                        <Link href="/prefeitura/cadastrar/setores"> <Menu.Item link>Setores</Menu.Item></Link>
+                        <Link href="/prefeitura/cadastrar/cartorios"> <Menu.Item link>Cartórios</Menu.Item></Link>
+                        <Link href="/prefeitura/cadastrar/tipos"> <Menu.Item link>Tipos de Processo</Menu.Item></Link>
+                        <Link href="/prefeitura/cadastrar/base"> <Menu.Item link>Base de Dados</Menu.Item></Link>
+                    </Menu.Item>
+                )}
+                 <Menu.Item>
+    
                     {admin && (
                         <Link href="/prefeitura/usuarios">
                             <Menu.Item link className={styles.menuItem}>
@@ -97,20 +112,7 @@ export function SidebarCartorio({ admin, avatar }: SideBarRequest) {
                             </Menu.Item>
                         </Link>
                     )}
-                    </Menu.Item>
-                {admin && (
-                    <Menu.Item>
-                        <Menu.Item header>
-                            <Icon name='configure' />
-                            Configurações
-                        </Menu.Item>
-                        <Link href="/prefeitura/cadastrar/atividades"><Menu.Item link >Atividades</Menu.Item></Link>
-                        <Link href="/prefeitura/cadastrar/setores"> <Menu.Item link>Setores</Menu.Item></Link>
-                        <Link href="/prefeitura/cadastrar/cartorios"> <Menu.Item link>Cartórios</Menu.Item></Link>
-                        <Link href="/prefeitura/cadastrar/tipos"> <Menu.Item link>Tipos de Processo</Menu.Item></Link>
-                        <Link href="/prefeitura/cadastrar/base"> <Menu.Item link>Base de Dados</Menu.Item></Link>
-                    </Menu.Item>
-                )}
+                </Menu.Item>
             </Sidebar>
         </div>
     )

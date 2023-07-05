@@ -139,7 +139,7 @@ export default function DashboardPrefeitura({ processList, setorList, tipoList, 
     return (
         <>
             <Head>
-                <title>MS CIT</title>
+                <title>SICART - CIT</title>
 
             </Head>
          

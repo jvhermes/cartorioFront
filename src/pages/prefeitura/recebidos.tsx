@@ -127,7 +127,7 @@ export default function DashboardPrefeitura({ processCartorioList, admin, avatar
     return (
         <>
             <Head>
-                <title>MS CIT</title>
+                <title>SICART - CIT</title>
 
             </Head>
             <main className={styles.main}>

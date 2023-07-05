@@ -5,7 +5,7 @@ import { SidebarPrefeitura } from "../../components/SidebarPrefeitura"
 import styles from "./style.module.scss"
 
 
-import { Input, Button, Icon } from 'semantic-ui-react'
+import { Input, Button, Icon,Sidebar } from 'semantic-ui-react'
 
 
 import { ModalProcess } from "../../components/Modal/Processo-P/ModalProcess"
@@ -297,12 +297,14 @@ export default function DashboardPrefeitura({ processList, atividadeList, depart
     return (
         <>
             <Head>
-                <title>MS CIT</title>
+                <title>SICART - CIT</title>
 
             </Head>
 
             <main className={styles.main}>
+         
                 <SidebarPrefeitura admin={admin} avatar={avatar} />
+      
                 <div className={styles.container} >
                     <div className={styles.title}>
                         <div>
@@ -439,7 +441,7 @@ export default function DashboardPrefeitura({ processList, atividadeList, depart
                     </section>
 
                 </div>
-
+         
             </main>
 
 
